@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<target name="build-SoSWeb">
+   <war destfile="build/SoSWeb.war" webxml="WebContent/WEB-INF/web.xml">
+   <fileset dir="${web.dir}/WebContent">
+      <include name="**/*.*"/>
+   </fileset>
+   <lib dir="WebContent/WEB-INF/lib">      
+   </lib>
+</war>
+</target>

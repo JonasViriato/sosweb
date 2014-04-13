@@ -92,7 +92,9 @@
   <!--                       localXsltFile This argument is expected        -->
   <!--                       to be a physical file. [null]                  -->
   <!--                                                                      -->
-  <!--                                                                      -->
+  
+  
+  <!--                                                                     
 
     <servlet>
         <servlet-name>default</servlet-name>
@@ -107,7 +109,7 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
+ -->
 
   <!-- The JSP page compiler and execution servlet, which is the mechanism  -->
   <!-- used by Tomcat to support JSP pages.  Traditionally, this servlet    -->
@@ -356,12 +358,12 @@
   <!-- must uncomment these mappings (or add them to your application's own -->
   <!-- web.xml deployment descriptor) to enable these services              -->
 
-    <!-- The mapping for the default servlet -->
+    <!-- The mapping for the default servlet 
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-
+-->
     <!-- The mappings for the JSP servlet -->
     <servlet-mapping>
         <servlet-name>jsp</servlet-name>

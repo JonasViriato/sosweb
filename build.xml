@@ -4,14 +4,19 @@
 	<property name="project-name" value="${ant.project.name}" />
 
 	<property name="war-file-name" value="${project-name}.war" />
+	<property name="source-directory" value="src" />
+	<property name="classes-directory" value="bin" />
 	<property name="web-directory" value="WebContent" />
 	<property name="web-xml-file" value="WebContent/WEB-INF/web.xml" />
 
 	<property name="build-directory" value="build" />
 
 	<target name="build-SoSWeb" depends="">
+		<mkdir dir="${source-directory}" />
+		<mkdir dir="${classes-directory}" />
 		<delete file="${war-file-name}" />
 		<war warfile="${war-file-name}" webxml="${web-xml-file}">
+			<classes dir="${classes-directory}" />
 			<fileset dir="${web-directory}">
 				<!-- Need to exclude it since webxml is an attribute of the war tag above -->
 				<exclude name="WEB-INF/web.xml" />

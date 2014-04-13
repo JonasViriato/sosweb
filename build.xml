@@ -10,9 +10,8 @@
 	<property name="build-directory" value="build" />
 
 	<target name="build-SoSWeb" depends="">
-		<mkdir dir="${build-directory}" />
-		<delete file="${build-directory}/${war-file-name}" />
-		<war warfile="${build-directory}/${war-file-name}" webxml="${web-xml-file}">
+		<delete file="${war-file-name}" />
+		<war warfile="${war-file-name}" webxml="${web-xml-file}">
 			<fileset dir="${web-directory}">
 				<!-- Need to exclude it since webxml is an attribute of the war tag above -->
 				<exclude name="WEB-INF/web.xml" />

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDJE2_zYMJxJGXh1M5D4aN9U8mHJnek4wg&amp;libraries=geometry&sensor=false"></script>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.custom.min.js"></script>
+<script type="text/javascript" src="../js/mapa.js"></script>
+</head>
+<body>
+<form method="post" action="plotMap.html">   
+    <fieldset>
+        <legend>Google Maps</legend>   
+ 
+        <div>
+            <label for="txtEndereco">Endereço:</label>
+            <input type="text" id="txtEndereco" name="txtEndereco" /> 
+            <label for="txtRaio">Raio:</label>
+            <select id="opRaio">
+					<option value="1">1KM</option>
+					<option value="2">2KM</option>
+					<option value="5">5KM</option>
+					<option value="10">10KM</option>
+					<option value="10000">Sem Restrição</option>
+			</select>
+			</div>
+        <div>
+            <input type="button" id="btnEndereco" name="btnEndereco" value="Mostrar no mapa" />
+        </div>
+ 
+        <div id="mapa" style="height: 500px; width: 500px">
+        </div>
+ 
+        <div>
+            <input type="submit" value="Enviar" name="btnEnviar" />
+        </div>
+ 
+        <input type="hidden" id="txtLatitude" name="txtLatitude" />
+        <input type="hidden" id="txtLongitude" name="txtLongitude" />
+    </fieldset>
+</form>
+</body>
+</html>

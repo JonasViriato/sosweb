@@ -3,7 +3,7 @@ var map;
 var marker;
 var infowindow;
 var cont=0;
-var pontos = [];
+var pontos = []; 
 
 function createMarker(prest) {
 	var marker_prest = new google.maps.Marker({

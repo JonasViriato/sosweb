@@ -8,25 +8,12 @@ var pontos = [];
 function carregarJSON() {
 	
 	 $.ajax(
-		        {
+		        {		        	 
 		            type: "GET",
 		            url: 'http://soservices.vsnepomuceno.cloudbees.net/prestador',
 		            contentType: "application/json; charset=utf-8",
-		            dataType: "json",
-		            xhrFields: {
-		                // The 'xhrFields' property sets additional fields on the XMLHttpRequest.
-		                // This can be used to set the 'withCredentials' property.
-		                // Set the value to 'true' if you'd like to pass cookies to the server.
-		                // If this is enabled, your server must respond with the header
-		                // 'Access-Control-Allow-Credentials: true'.
-		                withCredentials: false
-		              },
-
-		              headers: {
-		                // Set any custom headers here.
-		                // If you set any non-simple headers, your server must include these
-		                // headers in the 'Access-Control-Allow-Headers' response header.
-		              },
+		            dataType: "jsonp",
+		            crossDomain: true,		         	            
 		            success: function (data) {
 		            	$.each(data.list, function (i, theItem) {
 		            		if (i != "@id") {
@@ -60,6 +47,8 @@ function carregarJSON() {
 		                alert('msg = ' + msg + ', url = ' + url + ', line = ' + line);
 		            },
 		   });
+		   
+		   
 
 }
 

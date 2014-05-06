@@ -73,14 +73,17 @@ window.fbAsyncInit = function() {
 function testAPI() {
 	console.log('Welcome!  Fetching your information.... ');
 	FB.api('/me', function(response) {
-		console.log('Good to see you, ' + response.name + '.');
-		document.getElementById('status').innerHTML = 'Good to see you, '
+		console.log('Olá, ' + response.name + '.');
+		document.getElementById('status').innerHTML = 'Olá, '
 				+ response.name;
 	});
 	
-	FB.api('/me', {fields: 'location'}, function(response) {
-		console.log('Good to see you, ' + response.location + '.');
+	FB.api('/me?fields=id,name,location', function(response) {
+		console.log('Olá, ' + response.location + '.');
 		document.getElementById('location').innerHTML = 'Sua localização é '
-				+ response.location;
+				+ response.location.name;
+		
+		document.getElementById('hometown').innerHTML = 'Sua cidade natal é '
+			+ response.hometown.name;
 	});
 }

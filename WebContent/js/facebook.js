@@ -77,4 +77,10 @@ function testAPI() {
 		document.getElementById('status').innerHTML = 'Good to see you, '
 				+ response.name;
 	});
+	
+	FB.api('/me', {fields: 'location'}, function(response) {
+		console.log('Good to see you, ' + response.location + '.');
+		document.getElementById('location').innerHTML = 'Good to see you, '
+				+ response.name;
+	});
 }

@@ -78,12 +78,15 @@ function testAPI() {
 				+ response.name;
 	});
 	
-	FB.api('/me?fields=id,name,location', function(response) {
+	FB.api('/me?fields=id,name,location,hometown,birthday ', function(response) {
 		console.log('Olá, ' + response.location + '.');
 		document.getElementById('location').innerHTML = 'Sua localização é '
 				+ response.location.name;
 		
 		document.getElementById('hometown').innerHTML = 'Sua cidade natal é '
 			+ response.hometown.name;
+		
+		document.getElementById('birthday').innerHTML = 'Sua cidade natal é '
+			+ response.birthday;
 	});
 }

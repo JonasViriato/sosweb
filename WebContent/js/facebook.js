@@ -1,13 +1,13 @@
 // This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response) {
 	if (response.status === 'connected') {
-		testAPI();
+		connected();
 	} else if (response.status === 'not_authorized') {
-		document.getElementById('status').innerHTML = 'Please log '
-				+ 'into this app.';
+//		document.getElementById('status').innerHTML = 'Please log '
+//				+ 'into this app.';
 	} else {
-		document.getElementById('status').innerHTML = 'Please log '
-				+ 'into Facebook.';
+//		document.getElementById('status').innerHTML = 'Please log '
+//				+ 'into Facebook.';
 	}
 }
 function checkLoginState() {
@@ -44,22 +44,18 @@ window.fbAsyncInit = function() {
 
 // Here we run a very simple test of the Graph API after login is
 // successful.  See statusChangeCallback() for when this call is made.
-function testAPI() {
-	FB.api('/me', function(response) {
-		console.log('Olá, ' + response.name + '.');
+function connected() {
 		
-	});
-	
 	FB.api('/me?fields=id,name,location,hometown,birthday ', function(response) {
-		document.getElementById('status').innerHTML = 'Olá, '
+		document.getElementById('status').innerHTML = 'Bem vindo ao SoS, '
 			+ response.name;
-		document.getElementById('location').innerHTML = 'Sua localização é '
-				+ response.location.name;
-		
-		document.getElementById('hometown').innerHTML = 'Sua cidade natal é '
-			+ response.hometown.name;
-		
-		document.getElementById('birthday').innerHTML = 'Sua cidade natal é '
-			+ response.birthday;
+//		document.getElementById('location').innerHTML = 'Sua localização é '
+//				+ response.location.name;
+//		
+//		document.getElementById('hometown').innerHTML = 'Sua cidade natal é '
+//			+ response.hometown.name;
+//		
+//		document.getElementById('birthday').innerHTML = 'Sua cidade natal é '
+//			+ response.birthday;
 	});
 }

@@ -30,7 +30,7 @@ function carregarJSON() {
 	 $.ajax(
 		        {		        	 
 		            type: "GET",
-		            url: 'http://soservices.vsnepomuceno.cloudbees.net/prestador',
+		            url: 'http://localhost:8080/sos-api/prestador',
 		            contentType: "application/json; charset=utf-8",
 		            dataType: "jsonp",
 		            crossDomain: true,		         	            
@@ -82,11 +82,22 @@ function initialize() {
         content: "Usuário",
     });
     
+    google.maps.event.addListener(marker, 'drag', function () {
+        geocoder.geocode({ 'latLng': marker.getPosition() }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                   
+            }
+        });
+    });
+    
+    google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map,marker);
+    });    
+    
     carregarJSON();
 }
  
 $(document).ready(function () {
-    initialize();   
     
     function carregaPontosNoRaio(raio) {
     	var diametro_circulo = raio;
@@ -104,55 +115,39 @@ $(document).ready(function () {
     	};
     }
     
-    function carregarNoMapa(endereco, raio) {   	    	
-    	
-        geocoder.geocode({ 'address': endereco + ', Brasil', 'region': 'BR'}, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
+    function carregarNoMapa(enderecoR, raioR) {   	 
+
+    	 geocoder.geocode({ 'address': enderecoR + ', Brasil', 'region': 'BR'}, function (results, status) {
+        	if (status == google.maps.GeocoderStatus.OK) {
                 if (results[0]) {
                     var latitude = results[0].geometry.location.lat();
                     var longitude = results[0].geometry.location.lng();
- 
-                    $('#txtEndereco').val(results[0].formatted_address);
-                    $('#txtLatitude').val(latitude);
-                    $('#txtLongitude').val(longitude);
  
                     var location = new google.maps.LatLng(latitude, longitude);
                     marker.setPosition(location);
                     map.setCenter(location);
                     map.setZoom(16);
-                    infowindow.setContent(endereco);
-                    carregaPontosNoRaio(raio);
+                    infowindow.setContent(enderecoR);
+                    carregaPontosNoRaio(raioR);
                 }
             }
         });      
         
     }
     
-    $("#btnEndereco").click(function() {
-        if($(this).val() != "")
-            carregarNoMapa($("#txtEndereco").val(), $("#opRaio").val());
+    $("#buscar").click(function() {
+        if($(this).val() != "") {
+            initialize();   
+        	carregarNoMapa($("#txtEndereco").val(), $("#opRaio").val());
+        }
+        return false;
     });
  
-    $("#txtEndereco").blur(function() {
-        if($(this).val() != "")
-            carregarNoMapa($(this).val());
-    });
-    
-    google.maps.event.addListener(marker, 'drag', function () {
-        geocoder.geocode({ 'latLng': marker.getPosition() }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                    if (results[0]) { 
-                    $('#txtEndereco').val(results[0].formatted_address);
-                    $('#txtLatitude').val(marker.getPosition().lat());
-                    $('#txtLongitude').val(marker.getPosition().lng());
-                }
-            }
-        });
-    });
-    
-    google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map,marker);
-    });
+//    $("#txtEndereco").blur(function() {
+//        if($(this).val() != "")
+//            carregarNoMapa($(this).val());
+//    });
+//    
     
     /*
     $("#txtEndereco").autocomplete({

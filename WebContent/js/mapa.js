@@ -30,7 +30,7 @@ function carregarJSON() {
 	 $.ajax(
 		        {		        	 
 		            type: "GET",
-		            url: 'http://localhost:8080/sos-api/prestador',
+		            url: 'http://soservices.vsnepomuceno.cloudbees.net/prestador',
 		            contentType: "application/json; charset=utf-8",
 		            dataType: "jsonp",
 		            crossDomain: true,		         	            

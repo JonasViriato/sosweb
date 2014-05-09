@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SoS Group</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript"
+	src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDJE2_zYMJxJGXh1M5D4aN9U8mHJnek4wg&amp;libraries=geometry&sensor=false"></script>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.custom.min.js"></script>
+<script type="text/javascript" src="../js/facebook.js"></script>
+<script type="text/javascript" src="../js/mapa.js"></script>
+<link href="../css/sos.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+	<div class="content">
+		<div class="top_block sos-header">
+			<div class="header-content">
+				<div class="header-content-2">
+					<img src="../img/ic_launcher-web-logo.png" alt="SoS Logo" />
+				</div>
+				<div class="header-content-1">
+					<div class="header-content-1">
+						<fb:login-button autologoutlink="true" scope="public_profile,email,user_birthday,user_location,user_hometown" onlogin="checkLoginState();">
+						</fb:login-button>
+					</div>
+					<div id="status" class="user-info"></div>
+				</div>
+				<br style="clear: both;" />
+			</div>
+		</div>
+		<div class="top_block sos-beforeBody">
+			<div class="content"></div>
+		</div>
+		<div class="top_block sos-body">
+			<form  method="post" action="sos.html" class="validform">
+
+				<fieldset>
+					<div class="label-body">
+						<label> Qual Serviço você está procurando? </label>
+					</div>
+					<div>
+						<input type="text" onfocus="this.value='';"
+							onblur="if (this.value=='') {this.value='O que você procura?';}"
+							name="servico" value="O que você procura?" id="servico"
+							data-label="Serviço:" class="vf__text" /> 
+						<input type="text"
+							onfocus="this.value='';"
+							onblur="if (this.value=='') {this.value='Seu endereço?';}"
+							value="Seu endereço?" id="txtEndereco" data-label="endereco"
+							class="vf__text" /> 
+						<select name="opRaio" id="opRaio"
+							data-label="Raio" class="select">
+							<option value="10000">Raio de busca</option>
+							<option value="1">1KM</option>
+							<option value="2">2KM</option>
+							<option value="5">5KM</option>
+							<option value="10">10KM</option>
+						</select> 
+						<input type="submit" id="buscar" name="buscar" value="Buscar"
+							class="buscar_button" />
+					</div>
+
+				</fieldset>
+			</form>
+			<div id="mapa" class="mapa"></div>
+		</div>
+	</div>
+	<div class="bottom_block sos-foot">
+		<div class="content"></div>
+	</div>
+</body>
+</html>

@@ -66,9 +66,9 @@ function initialize() {
         icon: '../img/map_icon_user.png',
     };
  
-    map = new google.maps.Map(document.getElementById("mapa"), options);
- 
-    geocoder = new google.maps.Geocoder();
+    map = new google.maps.Map(document.getElementById("mapa"), options);    
+
+	geocoder = new google.maps.Geocoder();
  
     marker = new google.maps.Marker({
         map: map,
@@ -97,8 +97,17 @@ function initialize() {
     carregarJSON();
 }
  
-$(document).ready(function () {
-    
+$(document).ready(function () {    
+	
+    $("#txtEndereco").geocomplete().bind("geocode:result", function(event, result){
+    	$("#txtEndereco").value = result.formatted_address;
+    })
+    .bind("geocode:error", function(event, status){
+    	$("#txtEndereco").value = status;
+    })
+    .bind("geocode:multiple", function(event, results){
+    });
+	
     function carregaPontosNoRaio(raio) {
     	var diametro_circulo = raio;
     	var pontoCentral = marker.position;
@@ -141,35 +150,6 @@ $(document).ready(function () {
         	carregarNoMapa($("#txtEndereco").val(), $("#opRaio").val());
         }
         return false;
-    });
- 
-//    $("#txtEndereco").blur(function() {
-//        if($(this).val() != "")
-//            carregarNoMapa($(this).val());
-//    });
-//    
+    });     
     
-    /*
-    $("#txtEndereco").autocomplete({
-        source: function (request, response) {
-            geocoder.geocode({ 'address': request.term + ', Brasil', 'region': 'BR' }, function (results, status) {
-                response($.map(results, function (item) {
-                    return {
-                        label: item.formatted_address,
-                        value: item.formatted_address,
-                        latitude: item.geometry.location.lat(),
-                        longitude: item.geometry.location.lng()
-                    };
-                }));
-            });
-        },
-        select: function (event, ui) {
-            $("#txtLatitude").val(ui.item.latitude);
-            $("#txtLongitude").val(ui.item.longitude);
-            var location = new google.maps.LatLng(ui.item.latitude, ui.item.longitude);
-            marker.setPosition(location);
-            map.setCenter(location);
-            map.setZoom(16);
-        }
-    });*/
 });

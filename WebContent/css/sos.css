@@ -26,11 +26,6 @@ fieldset{
     background: url(https://developers.google.com/maps/documentation/places/images/powered-by-google-on-white.png) no-repeat center right;
 }
 
-.user_info{
-	text-align:center;
-	color:blue;
-}
-
 .text-contrast{
  	color:#F7F7F7;
  	position: absolute;
@@ -134,7 +129,7 @@ fieldset{
 	color: #7BA1BF;
     display: block;
     margin: 0px 0px 5px;
-	font: 200 20px/20px Arial, Helvetica, sans-serif;
+	font: 150 15px/15px Arial, Helvetica, sans-serif;
 }
 
 .header-content{

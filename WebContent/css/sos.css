@@ -1,13 +1,32 @@
-html, body {
-	margin: 0;
-	padding: 0;
+html,body {
+	margin:0;
+	padding:0;
 	width: 100%;
 	height: 100%; 
+}
+
+ul { 
+	margin:0;
+	padding:0;
+}
+
+fieldset{ 
+	border:0;
+	width:90%;
+    position:absolute;
+	right:0px;
 }
 
 .user_info{
 	text-align:center;
 	color:blue;
+}
+
+.text-contrast{
+ 	color:#F7F7F7;
+ 	position: absolute;
+ 	bottom: 10px;
+	left:45%;
 }
 
 .content {
@@ -57,24 +76,49 @@ html, body {
 	width: 100%;
 	height: 60px;
 	background-color: #E4E4D8;
+	background: -moz-linear-gradient(
+		top,
+		#ffffff 0%,
+		#EBEBDF 50%,
+		#E5E5DC 50%,
+		#D7D7D0);
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#ffffff),
+		color-stop(0.50, #EBEBDF),
+		color-stop(0.50, #E5E5DC),
+		to(#D7D7D0));	
 }
 
 .sos-beforeBody {
 	width: 100%;
-	height: 90px;
-	background-color: #ffffff;
+	height: 150px;
+	color: transparent;
 }
 
 .sos-body {
 	width: 100%;
-	height: 456px;
-	background-color: #ffffff;
+	height: 460px;
+	color: transparent;
+	display:block;
 }
 
 .sos-foot {
 	width: 100%;
-	height: 100px;
+	height: 180px;
 	background-color: #D0FFFE;
+	background: -moz-linear-gradient(
+		top,
+		#ffffff 0%,
+		#81d2e6 50%,
+		#78c7db 50%,
+		#24e3d9);
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#ffffff),
+		color-stop(0.50, #81d2e6),
+		color-stop(0.50, #78c7db),
+		to(#24e3d9));	
 }
 
 .user-info{
@@ -101,11 +145,11 @@ html, body {
 }
 
 .label-body {
-	color: #7BA1BF;
-	background: #FBFBFB;
+	color: #FFFFFF;
+	background: transparent;
     display: block;
     margin: 0px 0px 5px;
-	font: 200 30px/30px Arial, Helvetica, sans-serif;
+	font: 300 35px/35px Arial, Helvetica, sans-serif;
 }
 
 
@@ -114,7 +158,7 @@ html, body {
 	padding: 5px 4px 0px 5px;
     display: block;
     margin: 0px 0px 5px;
-	background: #FBFBFB;
+	color: transparent;
     font: 200 20px/20px Arial, Helvetica, sans-serif;
 	
 }
@@ -158,7 +202,7 @@ html, body {
 
 
 .validform{
-    background: #FBFBFB;
+    color: transparent;
     font: 12px Arial, Helvetica, sans-serif;
 }
 
@@ -187,6 +231,8 @@ html, body {
 }
 
 .mapa {
-	height: 400px; 
-	width: 400px;
+	height: 0px; 
+	width: 0px;
 }
+
+

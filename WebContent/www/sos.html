@@ -3,15 +3,43 @@
 <head>
 <title>SoS Group</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <script type="text/javascript"
 	src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDJE2_zYMJxJGXh1M5D4aN9U8mHJnek4wg&amp;libraries=geometry&sensor=false"></script>
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script type="text/javascript" src="../js/jquery-ui.custom.min.js"></script>
 <script type="text/javascript" src="../js/facebook.js"></script>
 <script type="text/javascript" src="../js/mapa.js"></script>
+<script type="text/javascript" src="../js/modernizr.custom.86080.js"></script>
+
 <link href="../css/sos.css" type="text/css" rel="stylesheet" />
+<link href="../css/slideshow.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
+	<ul class="cb-slideshow">
+		<li><span>Image 01</span>
+			<div>
+				<h3>bus·ca</h3>
+			</div>
+		</li>
+		<li><span>Image 02</span>
+			<div>
+				<h3>tra·ba·lho</h3>
+			</div>
+		</li>
+		<li><span>Image 03</span>
+			<div>
+				<h3>ser·vi·ço</h3>
+			</div>
+		</li>
+		<li><span>Image 04</span>
+			<div>
+				<h3>so·lu·ção</h3>
+			</div>
+		</li>
+	</ul>
 	<div class="content">
 		<div class="top_block sos-header">
 			<div class="header-content">
@@ -19,54 +47,58 @@
 					<img src="../img/ic_launcher-web-logo.png" alt="SoS Logo" />
 				</div>
 				<div class="header-content-1">
-					<div class="header-content-1">
+					<div class="header-content-2">
 						<fb:login-button autologoutlink="true" scope="public_profile,email,user_birthday,user_location,user_hometown" onlogin="checkLoginState();">
 						</fb:login-button>
 					</div>
-					<div id="status" class="user-info"></div>
+					<div id="status" class="header-content-1 user-info"></div>
 				</div>
 				<br style="clear: both;" />
 			</div>
 		</div>
 		<div class="top_block sos-beforeBody">
-			<div class="content"></div>
+			<div class="content">
+			</div>
 		</div>
-		<div class="top_block sos-body">
-			<form  method="post" action="sos.html" class="validform">
-
-				<fieldset>
-					<div class="label-body">
-						<label> Qual Serviço você está procurando? </label>
-					</div>
-					<div>
-						<input type="text" onfocus="this.value='';"
-							onblur="if (this.value=='') {this.value='O que você procura?';}"
-							name="servico" value="O que você procura?" id="servico"
-							data-label="Serviço:" class="vf__text" /> 
-						<input type="text"
-							onfocus="this.value='';"
-							onblur="if (this.value=='') {this.value='Seu endereço?';}"
-							value="Seu endereço?" id="txtEndereco" data-label="endereco"
-							class="vf__text" /> 
-						<select name="opRaio" id="opRaio"
-							data-label="Raio" class="select">
-							<option value="10000">Raio de busca</option>
-							<option value="1">1KM</option>
-							<option value="2">2KM</option>
-							<option value="5">5KM</option>
-							<option value="10">10KM</option>
-						</select> 
-						<input type="submit" id="buscar" name="buscar" value="Buscar"
-							class="buscar_button" />
-					</div>
-
-				</fieldset>
-			</form>
-			<div id="mapa" class="mapa"></div>
-		</div>
-	</div>
-	<div class="bottom_block sos-foot">
-		<div class="content"></div>
+				<div class="top_block sos-body">					
+				  <form  method="post" action="sos.html" class="validform">	
+					<fieldset>
+						<div class="label-body">
+							<label> Qual Serviço você está procurando? </label>
+						</div>
+						<div>
+							<input type="text" onfocus="this.value='';"
+								onblur="if (this.value=='') {this.value='O que você procura?';}"
+								name="servico" value="O que você procura?" id="servico"
+								data-label="Serviço:" class="vf__text" /> 
+							<input type="text"
+								onfocus="this.value='';"
+								onblur="if (this.value=='') {this.value='Seu endereço?';}"
+								value="Seu endereço?" id="txtEndereco" data-label="endereco"
+								class="vf__text" /> 
+							<select name="opRaio" id="opRaio"
+								data-label="Raio" class="select">
+								<option value="2000">Distância</option>
+								<option value="1">1KM</option>
+								<option value="2">2KM</option>
+								<option value="5">5KM</option>
+								<option value="10">10KM</option>
+								<option value="50">50KM</option>
+							</select> 
+							<input type="submit" id="buscar" name="buscar" value="Buscar"
+								class="buscar_button" />
+						</div>	
+					</fieldset>
+				</form>
+			  </div>	
+			  <div id="mapa" class="mapa"></div>
+		<div class="bottom_block sos-foot">
+			<div class="content">
+				<div class="text-contrast">
+		          	&copy; sosgroup, Inc.
+		        </div>
+			</div>
+		</div>	
 	</div>
 </body>
 </html>

@@ -16,6 +16,9 @@ function createMarker(prest) {
     });            			
 	
 	
+	$(listPrest).append("<p> Prestador: " + prest.nome + 
+					    "<br> E-mail: " + prest.email +"</p>");
+	
 	var infowindow_prest = new google.maps.InfoWindow({
 	    content: prest.nome + "<br>" + prest.telefone,
 	});
@@ -38,6 +41,7 @@ function carregarJSON() {
 		            success: function (data) {
 		            	contPontos = 0;		 
 		            	pontos = [];
+		            	$(listPrest).empty();
 		            	$.each(data.list, function (i, theItem) {
 		            		if (i != "@id") {
 		            			if ($.isArray(theItem)) {
@@ -58,6 +62,13 @@ function carregarJSON() {
 }
 
 function initialize() {
+	
+	$('#form').hide();
+    $('#beforeform').hide();
+    $('#mapa').show();
+    $('#listPrest').show();
+    $('#backForm').show();
+	
     var latlng = new google.maps.LatLng(-18.8800397, -47.05878999999999);
     var options = {
         zoom: 5,
@@ -140,8 +151,11 @@ function initializeServices() {
 	});
 }
  
-$(document).ready(function () {    
+$(document).ready(function () {   
 	
+	$('#mapa').hide();
+    $('#listPrest').hide();
+    $('#backForm').hide();
 	initializeGeocomplete();
 	initializeServices();
 	
@@ -166,16 +180,23 @@ $(document).ready(function () {
     	 geocoder.geocode({ 'address': enderecoR + ', Brasil', 'region': 'BR'}, function (results, status) {
         	if (status == google.maps.GeocoderStatus.OK) {
                 if (results[0]) {
+                                        
                     var latitude = results[0].geometry.location.lat();
                     var longitude = results[0].geometry.location.lng();
  
                     var location = new google.maps.LatLng(latitude, longitude);
                     marker.setPosition(location);
                     map.setCenter(location);
-                    map.setZoom(16);
+                    map.setZoom(14);
                     infowindow.setContent(enderecoR);
                     carregaPontosNoRaio(raioR);
                 }
+            } else {
+                $('#form').show();
+                $('#beforeform').show();         
+                $('#mapa').hide();
+                $('#listPrest').hide();
+                $('#backForm').hide();
             }
         });      
         
@@ -187,6 +208,15 @@ $(document).ready(function () {
         	carregarNoMapa($("#txtEndereco").val(), $("#opRaio").val());
         }
         return false;
-    });     
+    });  
+    
+    $("#backForm").click(function() {
+    	$('#form').show();
+        $('#beforeform').show();         
+        $('#mapa').hide();
+        $('#listPrest').hide();
+        $('#backForm').hide();
+        $("form")[0].reset();
+    });  
     
 });

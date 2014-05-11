@@ -111,7 +111,7 @@ function initializeGeocomplete() {
 function initializeServices() {
 	 $.ajax({
 		type : "GET",
-		url : 'http://localhost:6652/sos-api/tipo-servico',
+		url : 'http://soservices.vsnepomuceno.cloudbees.net/tipo-servico',
 		contentType : "application/json; charset=utf-8",
 		dataType : "jsonp",
 		crossDomain : true,

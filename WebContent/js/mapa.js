@@ -55,8 +55,6 @@ function carregarJSON() {
                        });
 		            },
 		            error: function (msg, url, line) {
-		                alert('error trapped in error: function(msg, url, line)');
-		                alert('msg = ' + msg + ', url = ' + url + ', line = ' + line);
 		            },
 		   });
 }
@@ -145,8 +143,6 @@ function initializeServices() {
 			 });
 		},
 		error : function(msg, url, line) {
-			alert('error trapped in error: function(msg, url, line)');
-			alert('msg = ' + msg + ', url = ' + url + ', line = ' + line);
 		},
 	});
 }
@@ -155,9 +151,19 @@ $(document).ready(function () {
 	
 	$('#mapa').hide();
     $('#listPrest').hide();
-    $('#backForm').hide();
+    $('#form-cad').hide();
+   
 	initializeGeocomplete();
 	initializeServices();
+	
+	function resetPage(){
+    	$('#form').show();
+        $('#beforeform').show();         
+        $('#mapa').hide();
+        $('#listPrest').hide();
+        $("form")[0].reset();
+        $('#form-cad').hide();
+    }
 	
     function carregaPontosNoRaio(raio) {
     	var diametro_circulo = raio;
@@ -196,7 +202,6 @@ $(document).ready(function () {
                 $('#beforeform').show();         
                 $('#mapa').hide();
                 $('#listPrest').hide();
-                $('#backForm').hide();
             }
         });      
         
@@ -211,12 +216,49 @@ $(document).ready(function () {
     });  
     
     $("#backForm").click(function() {
-    	$('#form').show();
-        $('#beforeform').show();         
-        $('#mapa').hide();
-        $('#listPrest').hide();
-        $('#backForm').hide();
-        $("form")[0].reset();
+    	resetPage();
     });  
+    
+    $( "#cadastro" ).click(function() {
+    	$('#form').hide();
+        $('#beforeform').hide();
+    	$('#form-cad').show();
+    });
+    
+    $("#img-logo").click(function() {
+    	resetPage();
+    });
+    
+    $("#btCadastrar").click(function() {
+    	
+    	var o = {};
+        var a = $("#form-cadastro").serializeArray();
+        $.each(a, function() {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+    	
+    	var json = JSON.stringify(o);
+    	
+    	$.ajax({
+    		type : "POST",
+    		url : 'http://soservices.vsnepomuceno.cloudbees.net/prestador',
+    		contentType : "application/json; charset=utf-8",
+    		dataType : "jsonp",
+    		data: json,
+    		success : function(data) {   
+    			$(labelMsg).append("<p> Prestador cadastrado com sucesso! </p>");
+    		},
+    		error : function(msg, url, line) {
+    			$(labelMsg).append("<p> Prestador não cadastrado! </p>");
+    		},
+    	});
+    }); 
     
 });

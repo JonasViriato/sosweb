@@ -46,7 +46,17 @@
 		<div class="top_block sos-header">
 			<div class="header-content">
 				<div class="header-content-2">
-					<img src="../img/ic_launcher-web-logo.png" alt="SoS Logo" />
+				  <div class="header-content-2">
+					<div class="header-content-2">
+						<a href="#"><img id="img-logo" src="../img/ic_launcher-web-logo.png" alt="SoS Logo" /></a>
+					</div>
+					<div class="header-content-1">
+						<a href="#" id="backForm" class="back-form">Home</a>
+					</div>
+				  </div>
+					<div id="cadastro" class="header-content-1 cad-prest">
+						<a href="#">Cadastre-se?</a>
+					</div>
 				</div>
 				<div class="header-content-1">
 					<div class="header-content-2">
@@ -65,7 +75,7 @@
 			</div>
 		</div>
 				<div id="form" class="top_block sos-body">					
-				  <form  method="post" action="sos.html" class="validform">	
+				  <form  id="form-busca" method="post" action="sos.html" class="validform">	
 					<fieldset>
 						<div class="label-body">
 							<label> Qual Serviço você está procurando? </label>
@@ -92,6 +102,66 @@
 								class="buscar_button" />
 						</div>	
 					</fieldset>
+				</form>				
+			  </div>
+			  <div id="form-cad" class="top_block sos-body">
+			  <form  id="form-cadastro" method="post" action="sos.html" class="validform-cadastro">	
+					<fieldset>
+						<div class="label-body-cad">
+							<label> Cadastro de Prestadores </label>
+						</div>
+						<div>
+							<div>
+								<input type="text" onfocus="this.value='';"
+									onblur="if (this.value=='') {this.value='Digite seu nome:';}"
+									name="nome" value="Digite seu nome:" id="nomeCad" size="50%"/>
+								<input type="text" onfocus="this.value='';"
+									onblur="if (this.value=='') {this.value='E-mail:';}"
+									name="email" value="E-mail:" id="emailCad" size="30%" /> 
+							</div>							 
+							<div>
+								<input type="text" onfocus="this.value='';"
+									onblur="if (this.value=='') {this.value='Rua:';}"
+									name="logradouro" value="Rua:" id="ruaCad" size="40%" /> 
+								<input type="text" onfocus="this.value='';"
+									onblur="if (this.value=='') {this.value='Numero:';}"
+									name="numero" value="Numero:" id="numCad" size="5%" /> 
+								<input type="text" onfocus="this.value='';"
+									onblur="if (this.value=='') {this.value='Complemento:';}"
+									name="complemento" value="Complemento:" id="comCad" size="15%" /> 
+									
+								<input type="text" onfocus="this.value='';"
+									onblur="if (this.value=='') {this.value='Cidade:';}"
+									name="cidade" value="Cidade:" id="cidCad" size="20%" /> 
+								<input type="text" onfocus="this.value='';"
+									onblur="if (this.value=='') {this.value='Estado:';}"
+									name="estado" value="Estado:" id="estCad" size="20%" /> 
+								<input type="text" onfocus="this.value='';"
+									onblur="if (this.value=='') {this.value='CEP:';}"
+									name="cep" value="CEP:" id="cepCad" size="20%" />
+							</div>
+							<div>
+								<input type="text" onfocus="this.value='';"
+									onblur="if (this.value=='') {this.value='CPF:';}"
+									name="cpf" value="CPF:" id="cpfCad" size="30%"/>
+								<input type="text" onfocus="this.value='';"
+									onblur="if (this.value=='') {this.value='Telefone:';}"
+									name="telefone" value="Telefone:" id="telCad" size="30%"/>
+								<input type="password" onfocus="this.value='';"
+									onblur="if (this.value=='') {this.value='Senha:';}"
+									name="senha" value="Senha:" id="passCad" size="30%"/>
+								<input type="password" onfocus="this.value='';"
+									onblur="if (this.value=='') {this.value='Senha:';}"
+									name="senha2" value="Senha:" id="pass2Cad" size="30%"/>
+							</div>
+							<div class="form-cad-button">						
+								<input type="button" id="btCadastrar" name="btCadastrar" value="Cadastrar"
+									class="buscar_button" />
+							</div>
+							<div id="labelMsg" class="label-msg-cad">
+							</div>
+						</div>	
+					</fieldset>
 				</form>
 			  </div>
 			  <div>	
@@ -100,7 +170,6 @@
 			  </div>
 		<div class="bottom_block sos-foot">
 			<div class="content">
-				<button id="backForm" class="back-form" type="button">Buscar Serviço!</button>
 				<div class="text-contrast">
 		          	&copy; sosgroup, Inc.
 		        </div>

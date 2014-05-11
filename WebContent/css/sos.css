@@ -132,6 +132,19 @@ fieldset{
 	font: 150 15px/15px Arial, Helvetica, sans-serif;
 }
 
+.cad-prest {
+	top: 15px;
+	position:absolute;
+	right:0px;
+	color: #000000;
+	font: 200 19px/19px Arial, Helvetica, sans-serif;
+	text-decoration:underline;
+}
+
+.cad-prest a{	
+	color: #000000;
+}
+
 .header-content{
 
 }
@@ -234,6 +247,66 @@ fieldset{
     text-overflow: '';
 }
 
+.validform-cadastro{
+	width: 100%;
+	height: 460px;
+    background: #FFFFFF;
+    font: 12px Arial, Helvetica, sans-serif;
+}
+
+.validform-cadastro fieldset{
+	width: 60%;
+	height: 420px;	
+    -moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #5ed7e0;
+    position:absolute;
+	right: 20%;
+	top: 10%;
+}
+
+.validform-cadastro input[type="text"], .validform-cadastro input[type="email"], .validform-cadastro input[type="password"], 
+.validform-cadastro textarea, .validform-cadastro select {
+    color: #888;
+    padding: 5px 4px 0px 5px;
+    margin-top: 6px;
+    margin-right: 6px;
+    margin-bottom: 10px;
+    border: 1px solid #CEE2E7;
+    background: #FBFBFB;
+    outline: 0;
+    -webkit-box-shadow: inset 1px 1px 2px rgba(200, 200, 200, 0.2);
+    box-shadow: inset 1px 1px 2px rgba(200, 200, 200, 0.2);
+    font: 200 20px/20px Arial, Helvetica, sans-serif;
+}
+
+.validform-cadastro select {
+    background: #FBFBFB no-repeat right;
+    background: #FBFBFB no-repeat right;
+   appearance:none;
+    -webkit-appearance:none; 
+   -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: '';
+}
+
+.label-body-cad {
+	color: #888;
+	background: transparent;
+    display: block;
+    margin: 0px 0px 5px;
+	font: 300 35px/35px Arial, Helvetica, sans-serif;
+}
+
+.label-msg-cad {
+	color: #888;
+	background: transparent;
+    display: block;
+    margin: 0px 0px 5px;
+	font: 300 20px/20px Arial, Helvetica, sans-serif;
+}
+
 .mapa {
 	width: 40%;
 	height: 460px;
@@ -259,16 +332,18 @@ fieldset{
 	color: #7BA1BF;
 }
 
-.back-form {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color: #0a5599;
-	padding: 10px 25px;
-	position:relative;
-	vertical-align: top;
+.back-form {	
+	top: 15px;
+	position:absolute;
+	left:0px;
+	color: #000000;
+	font: 200 19px/19px Arial, Helvetica, sans-serif;
+	text-decoration:underline;
+	border: 0px;
 	background: transparent;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	border: 1px solid #5ed7e0;
+}
+
+.form-cad-button {
+	position:absolute;
+	right: 0px;
 }

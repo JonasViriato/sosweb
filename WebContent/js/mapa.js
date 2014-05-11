@@ -2,8 +2,10 @@ var geocoder;
 var map;
 var marker;
 var infowindow;
-var cont=0;
+var contPontos=0;
 var pontos = [];
+var contTipoServicos=0;
+var tipoServicos = [];
 
 function createMarker(prest) {
 	var marker_prest = new google.maps.Marker({
@@ -22,11 +24,10 @@ function createMarker(prest) {
 		infowindow_prest.open(map,marker_prest);
 	});
 	
-	pontos[cont++] = marker_prest;
+	pontos[contPontos++] = marker_prest;
 }
  
 function carregarJSON() {
-	
 	 $.ajax(
 		        {		        	 
 		            type: "GET",
@@ -35,6 +36,8 @@ function carregarJSON() {
 		            dataType: "jsonp",
 		            crossDomain: true,		         	            
 		            success: function (data) {
+		            	contPontos = 0;		 
+		            	pontos = [];
 		            	$.each(data.list, function (i, theItem) {
 		            		if (i != "@id") {
 		            			if ($.isArray(theItem)) {
@@ -52,9 +55,6 @@ function carregarJSON() {
 		                alert('msg = ' + msg + ', url = ' + url + ', line = ' + line);
 		            },
 		   });
-		   
-		   
-
 }
 
 function initialize() {
@@ -96,17 +96,54 @@ function initialize() {
     
     carregarJSON();
 }
+
+function initializeGeocomplete() {
+	$("#txtEndereco").geocomplete().bind("geocode:result", function(event, result){
+		$("#txtEndereco").value = result.formatted_address;
+	})
+	.bind("geocode:error", function(event, status){
+		$("#txtEndereco").value = status;
+	})
+	.bind("geocode:multiple", function(event, results){
+	});
+}
+
+function initializeServices() {
+	 $.ajax({
+		type : "GET",
+		url : 'http://localhost:6652/sos-api/tipo-servico',
+		contentType : "application/json; charset=utf-8",
+		dataType : "jsonp",
+		crossDomain : true,
+		success : function(data) {
+			contTipoServicos=0;
+			tipoServicos = [];
+			$.each(data.list, function(i, theItem) {
+				if (i != "@id") {
+					if ($.isArray(theItem)) {
+						$.each(theItem, function(j, tipo) {
+							tipoServicos[contTipoServicos++] = tipo.nome;
+						});
+					} else {
+						tipoServicos[contTipoServicos++] = theItem.nome;
+					}
+				}
+			});
+			$("#servico").autocomplete({
+			      source: tipoServicos
+			 });
+		},
+		error : function(msg, url, line) {
+			alert('error trapped in error: function(msg, url, line)');
+			alert('msg = ' + msg + ', url = ' + url + ', line = ' + line);
+		},
+	});
+}
  
 $(document).ready(function () {    
 	
-    $("#txtEndereco").geocomplete().bind("geocode:result", function(event, result){
-    	$("#txtEndereco").value = result.formatted_address;
-    })
-    .bind("geocode:error", function(event, status){
-    	$("#txtEndereco").value = status;
-    })
-    .bind("geocode:multiple", function(event, results){
-    });
+	initializeGeocomplete();
+	initializeServices();
 	
     function carregaPontosNoRaio(raio) {
     	var diametro_circulo = raio;

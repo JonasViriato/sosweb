@@ -9,7 +9,7 @@
 <script type="text/javascript"
 	src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDJE2_zYMJxJGXh1M5D4aN9U8mHJnek4wg&amp;libraries=geometry,places&sensor=false"></script>
 <script type="text/javascript" src="../js/jquery.min.js"></script>
-<script type="text/javascript" src="../js/jquery-ui.custom.min.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="../js/facebook.js"></script>
 <script type="text/javascript" src="../js/mapa.js"></script>
 <script type="text/javascript" src="../js/modernizr.custom.86080.js"></script>
@@ -17,6 +17,7 @@
 
 <link href="../css/sos.css" type="text/css" rel="stylesheet" />
 <link href="../css/slideshow.css" type="text/css" rel="stylesheet" />
+<link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" type="text/css" rel="stylesheet" >
 </head>
 <body>
 	<ul class="cb-slideshow">
@@ -73,8 +74,8 @@
 							<input type="text" onfocus="this.value='';"
 								onblur="if (this.value=='') {this.value='O que você procura?';}"
 								name="servico" value="O que você procura?" id="servico"
-								data-label="Serviço:" class="vf__text" /> 
-							<input type="text" class="input-endereco"
+								data-label="Serviço:" /> 
+							<input type="text" 
 								onfocus="this.value='';"
 								onblur="if (this.value=='') {this.value='Seu endereço?';}"
 								value="Seu endereço?" id="txtEndereco" data-label="endereco" /> 

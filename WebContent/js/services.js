@@ -53,7 +53,7 @@ SoServices.factory('Authentication', function($localStorage){
     isLoggedIn: function() { currentUser.logado; },
     currentUser: function() { 
     	currentUser = angular.fromJson($localStorage.currentUserJson);
-    	return $localStorage.currentUser;
+    	return currentUser;
     }
   };
 });

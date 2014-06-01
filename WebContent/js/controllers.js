@@ -264,6 +264,8 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Alerts, user) {
   $scope.user = user;
 			
   $scope.logar = function () {	 
+	  
+	    var userTemp = $scope.user;
 		$http({
 			method : 'POST',
 			url : 'http://soservices.vsnepomuceno.cloudbees.net/token/login',

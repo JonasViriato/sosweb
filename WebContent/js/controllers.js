@@ -8,14 +8,15 @@ var geo = new google.maps.Geocoder; //Posicao inicial do mapa
 /* Controllers */
 var SoSCtrls = angular.module('sosWeb.controllers', ['ui.bootstrap','ui.map','ui.event']);
 
+
 /* Main page Ctrl */
 SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Alerts',
-	'$log',  function($scope, $http, $location, $modal, Alerts, $log) {
-	$scope.logado = true;
+	'$log', 'Authentication' ,  function($scope, $http, $location, $modal, Alerts, $log, Authentication ) {	
 	$scope.gPlace;
 	$scope.tipoServico;
 	$scope.endereco;
 	$scope.raio;
+	$scope.user = Authentication.currentUser();
 
 	$scope.search = function() {
 		$location.path(
@@ -41,7 +42,7 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 		"prestadores_encontrados": "Prestadores encontrados",
 		"endereco": "Endereço",
 		"buscar": "Buscar",
-	}
+	};
 
 	//Alerts na pagina principal
 	$scope.alerts = Alerts.getAll();
@@ -50,7 +51,7 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 	$scope.items = ['item1', 'item2', 'item3'];
 	$scope.open = function (size) {
 		var modalInstance;
-		if($scope.logado){
+		if($scope.user.logado){
 			modalInstance = $modal.open({
 			  templateUrl: 'partials/anunciar.html',
 			  controller: 'AnuncioCtrl',
@@ -67,13 +68,55 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 			  $log.info('Modal dismissed at: ' + new Date());
 			});
 		}else{
-			modalInstance = $modal.open({
-			  templateUrl: 'partials/login.html',
-			  controller: 'LoginCtrl',
-			  size: size
-			});
+			$scope.openLogin();
 		}
 	};
+	
+	$scope.openLogin = function (size) {
+		var modalInstance;
+		modalInstance = $modal.open({
+			  templateUrl: 'partials/login.html',
+			  controller: 'LoginCtrl',
+			  size: size,
+			  resolve: {
+			    user: function () {
+			      return $scope.user;
+			    }
+			  }
+		});
+		modalInstance.result.then(function(data) {
+			if (data != '') {
+				$scope.user.logado = true;
+				$scope.user.senha='';
+				$scope.user.apiKey = data.apiKey;
+				$scope.$apply();
+				Authentication.login($scope.user);
+				
+			}
+		}, function() {
+		});
+	};
+	
+	$scope.logout = function (size) {
+		$http({
+			method : 'DELETE',
+			url : 'http://localhost:6652/sos-api/token/logout/'+$scope.user.email,
+			data : $scope.user,
+			headers: {'Content-Type': 'application/json'}
+		}).
+		success(function(data, status, headers, config) {
+			$scope.user.email='';
+			$scope.user.senha='';
+			$scope.user.logado = false;
+			$scope.user.apiKey = '';
+			$scope.$apply();
+			Authentication.logout($scope.user);
+
+		}).error(function(data, status, headers, config) {
+			Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
+		});    	  
+	};
+	
 }]);
 
 /* Ctrl Busca de prestadores */
@@ -216,10 +259,23 @@ var AnuncioCtrl = function ($scope, $modalInstance, items) {
 };
 
 //Controla o dialog de "sign in" / "sign up"
-var LoginCtrl = function ($scope, $modalInstance) {
+var LoginCtrl = function ($scope, $http, $modalInstance, Alerts, user) {
+	
+  $scope.user = user;
+			
+  $scope.logar = function () {	 
+		$http({
+			method : 'POST',
+			url : 'http://localhost:6652/sos-api/token/login',
+			data : $scope.user,
+			headers: {'Content-Type': 'application/json'}
+		}).
+		success(function(data, status, headers, config) {
+			$modalInstance.close(data);
 
-  $scope.ok = function () {
-    $modalInstance.close($scope.selected.item);
+		}).error(function(data, status, headers, config) {
+			Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
+		});    
   };
 
   $scope.cancel = function () {

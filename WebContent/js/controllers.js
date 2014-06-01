@@ -100,7 +100,7 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 	$scope.logout = function (size) {
 		$http({
 			method : 'DELETE',
-			url : 'http://localhost:6652/sos-api/token/logout/'+$scope.user.email,
+			url : 'http://soservices.vsnepomuceno.cloudbees.net/token/logout/'+$scope.user.email,
 			data : $scope.user,
 			headers: {'Content-Type': 'application/json'}
 		}).
@@ -266,7 +266,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Alerts, user) {
   $scope.logar = function () {	 
 		$http({
 			method : 'POST',
-			url : 'http://localhost:6652/sos-api/token/login',
+			url : 'http://soservices.vsnepomuceno.cloudbees.net/token/login',
 			data : $scope.user,
 			headers: {'Content-Type': 'application/json'}
 		}).

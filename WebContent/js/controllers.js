@@ -89,8 +89,8 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 				$scope.user.logado = true;
 				$scope.user.senha='';
 				$scope.user.apiKey = data.apiKey;
-				$scope.$apply();
 				Authentication.login($scope.user);
+				$scope.$apply();
 				
 			}
 		}, function() {
@@ -109,8 +109,8 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 			$scope.user.senha='';
 			$scope.user.logado = false;
 			$scope.user.apiKey = '';
-			$scope.$apply();
 			Authentication.logout($scope.user);
+			$scope.$apply();
 
 		}).error(function(data, status, headers, config) {
 			Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');

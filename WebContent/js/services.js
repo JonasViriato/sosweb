@@ -30,7 +30,7 @@ SoServices.service('Alerts', function () { //Alerts/Messages
 
 SoServices.factory('Authentication', function($localStorage){		
 	
-	var currentUser = {
+	var userAuth = {
 			nome: '',
 		    email: '',
 		    senha: null,
@@ -38,22 +38,24 @@ SoServices.factory('Authentication', function($localStorage){
 		    logado: false
 	};
 	
-	$localStorage.currentUserJson = angular.toJson(currentUser);
+	if ($localStorage.currentUserJson == null) {
+		$localStorage.currentUserJson = angular.toJson(userAuth);
+	} 
 
   return {
     login: function(userLogin) { 
-    	currentUser = userLogin;
-    	$localStorage.currentUserJson = angular.toJson(currentUser);
+    	userAuth = userLogin;
+    	$localStorage.currentUserJson = angular.toJson(userAuth);
     },
     logout: function(userLogout) { 
-    	currentUser = userLogout;
-    	$localStorage.currentUserJson = angular.toJson(currentUser);
+    	userAuth = userLogout;
+    	$localStorage.currentUserJson = angular.toJson(userAuth);
     	delete $localStorage.currentUserJson;
     },
-    isLoggedIn: function() { currentUser.logado; },
+    isLoggedIn: function() { userAuth.logado; },
     currentUser: function() { 
-    	currentUser = angular.fromJson($localStorage.currentUserJson);
-    	return currentUser;
+    	userAuth = angular.fromJson($localStorage.currentUserJson);
+    	return userAuth;
     }
   };
 });

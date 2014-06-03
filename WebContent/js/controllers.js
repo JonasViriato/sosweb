@@ -117,6 +117,32 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 		});    	  
 	};
 	
+	$scope.openCadastro = function (size) {
+		var modalInstance;
+		modalInstance = $modal.open({
+			  templateUrl: 'partials/cadastrarUsuario.html',
+			  controller: 'cadastrarCtrl',
+			  size: size,
+			  resolve: {
+			    user: function () {
+			      return $scope.user;
+			    }
+			  }
+		});
+		modalInstance.result.then(function(data) {
+			if (data != '') {
+				$scope.user.logado = true;
+				$scope.user.senha='';
+				$scope.user.confirmarsenha='';
+				$scope.user.apiKey = data.apiKey;
+				Authentication.login($scope.user);
+				$scope.$apply();
+				
+			}
+		}, function() {
+		});
+	};
+	
 }]);
 
 /* Ctrl Busca de prestadores */
@@ -265,22 +291,67 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Alerts, user) {
 			
   $scope.logar = function () {	 
 	  
-	    var userTemp = $scope.user;
-		$http({
-			method : 'POST',
-			url : 'http://soservices.vsnepomuceno.cloudbees.net/token/login',
-			data : $scope.user,
-			headers: {'Content-Type': 'application/json'}
-		}).
-		success(function(data, status, headers, config) {
-			$modalInstance.close(data);
-
-		}).error(function(data, status, headers, config) {
-			Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
-		});    
+	    if ( $scope.user.email != '' && $scope.user.senha != null) {
+			$http({
+				method : 'POST',
+				url : 'http://soservices.vsnepomuceno.cloudbees.net/token/login',
+				data : $scope.user,
+				headers: {'Content-Type': 'application/json'}
+			}).
+			success(function(data, status, headers, config) {
+				$modalInstance.close(data);
+	
+			}).error(function(data, status, headers, config) {
+				Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
+			});    
+	    } else {
+	    	Alerts.addAlert('Todos os campos devem ser preenchidos!');
+	    }
   };
 
   $scope.cancel = function () {
+	limparUsuario(user);
     $modalInstance.dismiss('cancel');
   };
+};
+
+//Controla o dialog de cadastro
+var cadastrarCtrl = function ($scope, $http, $modalInstance, Alerts, user) {
+	
+  $scope.user = user;
+			
+  $scope.cadastrar = function () {	 
+	  
+	 if ( $scope.user.email != '' && $scope.user.senha != null && 
+			 $scope.user.nome != '' && $scope.user.confirmarsenha != null) {
+		 if (angular.equals($scope.user.senha, $scope.user.confirmarsenha) ) {
+			$http({
+				method : 'POST',
+				url : 'http://soservices.vsnepomuceno.cloudbees.net/usuario',
+				data : $scope.user,
+				headers: {'Content-Type': 'application/json'}
+			}).
+			success(function(data, status, headers, config) {
+				$modalInstance.close(data);
+			
+			}).error(function(data, status, headers, config) {
+				Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
+			});    
+		 }
+	  }else {
+	    	Alerts.addAlert('Todos os campos devem ser preenchidos!');
+      }
+  };
+
+  $scope.cancel = function () {
+    limparUsuario(user);
+    $modalInstance.dismiss('cancel');
+  };
+};
+
+var limparUsuario = function(user) {
+	user.nome='';
+	user.email='';
+	user.senha='';
+	user.confirmarsenha='';
 };

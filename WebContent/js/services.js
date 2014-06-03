@@ -35,7 +35,8 @@ SoServices.factory('Authentication', function($localStorage){
 		    email: '',
 		    senha: null,
 		    apiKey: '',
-		    logado: false
+		    logado: false,
+		    confirmarsenha: null
 	};
 	
 	if ($localStorage.currentUserJson == null) {

@@ -40,7 +40,7 @@
             <li data-ng-show="user.logado"><span class="label label-default">Bem vindo, {{user.email}}</span></li>
             <li data-ng-show="user.logado"><a href="" data-ng-click="logout()">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
             <li data-ng-hide="user.logado"><a href="" data-ng-click="openLogin()">Login <span class="glyphicon glyphicon-log-in"></span></a></li>
-            <li data-ng-hide="user.logado"><a href="#/view2">Cadastre-se <span class="glyphicon glyphicon-user"></span></a></li>
+            <li data-ng-hide="user.logado"><a href="" data-ng-click="openCadastro()">Cadastre-se <span class="glyphicon glyphicon-user"></span></a></li>
             <li>
               <button class='btn btn-warning navbar-btn' data-ng-click="open()">
                 <span class="glyphicon glyphicon-bullhorn"></span> Anuncie aqui!

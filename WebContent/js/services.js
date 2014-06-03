@@ -22,6 +22,12 @@ SoServices.service('Alerts', function () { //Alerts/Messages
 	this.getAll = function() {
 		return alerts;
 	};
+	
+	this.closeAll = function() {
+		while (alerts.length > 0) {
+			alerts.splice(0, 1);
+		}		
+	};
 
 	// this.addAlert('Teste Danger', 'danger');
 	// this.addAlert('Teste Success', 'success');

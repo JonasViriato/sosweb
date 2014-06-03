@@ -27,8 +27,8 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 
 	$scope.tiposServicos = new Array();
 	$http({
-		method: 'JSONP',
-		url: 'http://soservices.vsnepomuceno.cloudbees.net/tipo-servico?callback=JSON_CALLBACK'}).
+		method: 'GET',
+		url: 'http://soservices.vsnepomuceno.cloudbees.net/tipo-servico'}).
     	success(function(data, status, headers, config) {
 			$scope.tiposServicos = data;
 
@@ -90,6 +90,7 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 				$scope.user.senha='';
 				$scope.user.apiKey = data.apiKey;
 				Authentication.login($scope.user);
+				Alerts.closeAll();
 				$scope.$apply();
 				
 			}
@@ -137,6 +138,7 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 				$scope.user.confirmarsenha='';
 				$scope.user.apiKey = data.apiKey;
 				Authentication.login($scope.user);
+				Alerts.closeAll();
 				$scope.$apply();
 				
 			}
@@ -202,7 +204,7 @@ SoSCtrls.controller('PrestadoresCtrl',
 							"distancia" : $scope.raio
 						}*/
 
-					$http({method: 'JSONP', url: urlPrestadores/*, params: $scope.prestParams*/}).
+					$http({method: 'GET', url: urlPrestadores/*, params: $scope.prestParams*/}).
 				    	success(function(data, status, headers, config) {
 							$scope.prestadores = data;
 					    	//TODO: Alterar variaveis quando realizar link com paginacao

@@ -323,7 +323,8 @@ var cadastrarCtrl = function ($scope, $http, $modalInstance, Alerts, user) {
   $scope.cadastrar = function () {	 
 	  
 	 if ( $scope.user.email != '' && $scope.user.senha != null && 
-			 $scope.user.nome != '' && $scope.user.confirmarsenha != null) {
+			 $scope.user.nome != '' && $scope.user.confirmarsenha != null && 
+			 $scope.user.senha != '' && $scope.user.confirmarsenha != '') {
 		 if (angular.equals($scope.user.senha, $scope.user.confirmarsenha) ) {
 			$http({
 				method : 'POST',

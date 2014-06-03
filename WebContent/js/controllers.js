@@ -105,6 +105,7 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 			headers: {'Content-Type': 'application/json'}
 		}).
 		success(function(data, status, headers, config) {
+			$scope.user.nome='';
 			$scope.user.email='';
 			$scope.user.senha='';
 			$scope.user.logado = false;
@@ -304,9 +305,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Alerts, user) {
 			}).error(function(data, status, headers, config) {
 				Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
 			});    
-	    } else {
-	    	Alerts.addAlert('Todos os campos devem ser preenchidos!');
-	    }
+	    } 
   };
 
   $scope.cancel = function () {
@@ -338,10 +337,10 @@ var cadastrarCtrl = function ($scope, $http, $modalInstance, Alerts, user) {
 			}).error(function(data, status, headers, config) {
 				Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
 			});    
-		 }
-	  }else {
-	    	Alerts.addAlert('Todos os campos devem ser preenchidos!');
-      }
+		 }else {
+		    	Alerts.addAlert('Senha e confirmação diferentes!');
+	      }
+	  }
   };
 
   $scope.cancel = function () {

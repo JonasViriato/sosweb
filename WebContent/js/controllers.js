@@ -49,7 +49,7 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 	$scope.closeAlert = function(index) {Alerts.removeAlert(index);};
 
 	$scope.items = ['item1', 'item2', 'item3'];
-	$scope.open = function (size) {
+	$scope.openAnuncio = function (size) {
 		var modalInstance;
 		if($scope.user.logado){
 			modalInstance = $modal.open({
@@ -68,16 +68,15 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 			  $log.info('Modal dismissed at: ' + new Date());
 			});
 		}else{
-			$scope.openLogin();
+			$scope.openLogin(true);
 		}
 	};
 	
-	$scope.openLogin = function (size) {
+	$scope.openLogin = function (fromAnuncio) {
 		var modalInstance;
 		modalInstance = $modal.open({
 			  templateUrl: 'partials/login.html',
 			  controller: 'LoginCtrl',
-			  size: size,
 			  resolve: {
 			    user: function () {
 			      return $scope.user;
@@ -92,6 +91,9 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 				Authentication.login($scope.user);
 				Alerts.closeAll();
 				$scope.$apply();
+				if (fromAnuncio) {
+					$scope.openAnuncio();
+				}
 				
 			}
 		}, function() {

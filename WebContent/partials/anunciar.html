@@ -1,19 +1,21 @@
 <div>
         <div class="modal-header">
-            <h3 class="modal-title">I am a modal!</h3>
+            <h3>Qual serviço você quer oferecer?</h3>
         </div>
-
-        <div class="modal-body">
-            <ul>
-                <li data-ng-repeat="item in items">
-                    <a data-ng-click="selected.item = item">{{ item }}</a>
-                </li>
-            </ul>
-            Selected: <b>{{ selected.item }}</b>
-        </div>
-
-        <div class="modal-footer">
-            <button class="btn btn-primary" data-ng-click="ok()">OK</button>
-            <button class="btn btn-warning" data-ng-click="cancel()">Cancel</button>
-        </div>
+        <form ng-submit="submit()">
+          <div class="modal-body">
+            <label>Tipo de Serviço:</label><br>
+            <input type="text" ng-model="servico.tipo" required /><br>
+            <label>Descrição:</label><br>
+            <textarea ng-model="text" required></textarea>
+            <input type="email" ng-model="servico.descricao" required/><br>
+            <label>Valor:</label><br>
+            <input type="text" ng-model="servico.valor" required/><br>
+            
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-primary" data-ng-click="cadastrar()">Anunciar</button>
+              <button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
+          </div>
+        </form>
 </div>

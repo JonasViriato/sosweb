@@ -17,6 +17,18 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 	$scope.endereco;
 	$scope.raio;
 	$scope.user = Authentication.currentUser();
+	$scope.prestador = {
+			email: '',
+			cpf: '',
+		    telefone: '',
+		    logradouro: '',
+		    numero: 0,
+		    complemento: '',
+		    cep: '',
+		    cidade: '',
+		    estado: ''
+	};
+	
 
 	$scope.search = function() {
 		$location.path(
@@ -48,25 +60,22 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 	$scope.alerts = Alerts.getAll();
 	$scope.closeAlert = function(index) {Alerts.removeAlert(index);};
 
-	$scope.items = ['item1', 'item2', 'item3'];
-	$scope.openAnuncio = function (size) {
-		var modalInstance;
-		if($scope.user.logado){
-			modalInstance = $modal.open({
-			  templateUrl: 'partials/anunciar.html',
-			  controller: 'AnuncioCtrl',
-			  size: size,
-			  resolve: {
-			    items: function () {
-			      return $scope.items;
-			    }
-			  }
-			});
-			modalInstance.result.then(function (selectedItem) {
-			  $scope.selected = selectedItem;
-			}, function () {
-			  $log.info('Modal dismissed at: ' + new Date());
-			});
+	$scope.openAnuncio = function () {
+		
+		if($scope.user.logado){	
+			$http({
+				method: 'GET',
+				url: 'http://soservices.vsnepomuceno.cloudbees.net/prestador/email?email='+$scope.user.email}).
+		    	success(function(data, status, headers, config, prest) {
+		    		if (data.cpf != data.email) {
+		    			$scope.openCadastroAnuncio();
+		    		} else {
+		    			$scope.openCadastroPrestador();
+		    		}
+			    }).
+			    error(function(data, status, headers, config) {		
+			    	Alerts.addAlert('Erro: ' + status +' '+ data, 'danger');
+			    });			
 		}else{
 			$scope.openLogin(true);
 		}
@@ -100,7 +109,7 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 		});
 	};
 	
-	$scope.logout = function (size) {
+	$scope.logout = function () {
 		$http({
 			method : 'DELETE',
 			url : 'http://soservices.vsnepomuceno.cloudbees.net/token/logout/'+$scope.user.email,
@@ -121,12 +130,11 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 		});    	  
 	};
 	
-	$scope.openCadastro = function (size) {
+	$scope.openCadastro = function () {
 		var modalInstance;
 		modalInstance = $modal.open({
 			  templateUrl: 'partials/cadastrarUsuario.html',
 			  controller: 'cadastrarCtrl',
-			  size: size,
 			  resolve: {
 			    user: function () {
 			      return $scope.user;
@@ -148,6 +156,43 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 		});
 	};
 	
+	$scope.openCadastroPrestador = function () {
+		var modalInstance;
+		modalInstance = $modal.open({
+			  templateUrl: 'partials/cadastrarPrestador.html',
+			  controller: 'cadastroPrestadorCtrl',
+			  resolve: {
+				    prestador: function () {
+				    	$scope.prestador.email = $scope.user.email;
+				        return $scope.prestador;
+				    }
+				  }
+			});
+			modalInstance.result.then(function () {
+				$scope.openCadastroAnuncio();
+			}, 
+			function () {
+
+		});
+	};
+	
+	$scope.openCadastroAnuncio = function () {
+		var modalInstance;
+		modalInstance = $modal.open({
+			  templateUrl: 'partials/anunciar.html',
+			  controller: 'anuncioCtrl',
+			  resolve: {
+			    user: function () {
+			      return $scope.user;
+			    }
+			  }
+			});
+			modalInstance.result.then(function () {
+			}, 
+			function () {
+
+		});
+	};
 }]);
 
 /* Ctrl Busca de prestadores */
@@ -163,8 +208,8 @@ SoSCtrls.controller('PrestadoresCtrl',
 
 		$scope.maxRate = 10;
 		var urlPrestadores = 
-		'http://soservices.vsnepomuceno.cloudbees.net/prestador?callback=JSON_CALLBACK';
-		// 'http://soservices.vsnepomuceno.cloudbees.net/prestador/query?callback=JSON_CALLBACK';
+		//'http://soservices.vsnepomuceno.cloudbees.net/prestador';
+		 'http://soservices.vsnepomuceno.cloudbees.net/prestador/query';
 
 		//Filter and order
 		$scope.orderProp = '-avaliacao';
@@ -206,7 +251,7 @@ SoSCtrls.controller('PrestadoresCtrl',
 							"distancia" : $scope.raio
 						}*/
 
-					$http({method: 'GET', url: urlPrestadores/*, params: $scope.prestParams*/}).
+					$http({method: 'GET', url: urlPrestadores, params: $scope.prestParams}).
 				    	success(function(data, status, headers, config) {
 							$scope.prestadores = data;
 					    	//TODO: Alterar variaveis quando realizar link com paginacao
@@ -271,24 +316,6 @@ SoSCtrls.controller('PrestadoresCtrl',
 SoSCtrls.controller('MyCtrl2', ['$scope', function($scope) {
 }]);
 
-
-//Controla o dialog de anuncio de servicos
-var AnuncioCtrl = function ($scope, $modalInstance, items) {
-
-  $scope.items = items;
-  $scope.selected = {
-    item: $scope.items[0]
-  };
-
-  $scope.ok = function () {
-    $modalInstance.close($scope.selected.item);
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-};
-
 //Controla o dialog de "sign in" / "sign up"
 var LoginCtrl = function ($scope, $http, $modalInstance, Alerts, user) {
 	
@@ -331,7 +358,7 @@ var cadastrarCtrl = function ($scope, $http, $modalInstance, Alerts, user) {
 		 if (angular.equals($scope.user.senha, $scope.user.confirmarsenha) ) {
 			$http({
 				method : 'POST',
-				url : 'http://soservices.vsnepomuceno.cloudbees.net/usuario',
+				url : 'http://soservices.vsnepomuceno.cloudbees.net/prestador/usuario',
 				data : $scope.user,
 				headers: {'Content-Type': 'application/json'}
 			}).
@@ -351,6 +378,47 @@ var cadastrarCtrl = function ($scope, $http, $modalInstance, Alerts, user) {
     limparUsuario(user);
     $modalInstance.dismiss('cancel');
   };
+};
+
+//Controla o dialog de cadastro
+var cadastroPrestadorCtrl = function ($scope, $http, $modalInstance, Alerts, prestador) {
+	
+  $scope.prestador = prestador;
+			
+  $scope.cadastrar = function () {	 
+	  
+	 if ($scope.prestador.cpf != '' && $scope.prestador.cpf != null ) {
+		 $http({
+				method : 'PUT',
+				url : 'http://soservices.vsnepomuceno.cloudbees.net/prestador',
+				data : $scope.prestador,
+				headers: {'Content-Type': 'application/json'}
+			}).
+			success(function(data, status, headers, config) {
+				$modalInstance.close(data);			
+			}).error(function(data, status, headers, config) {
+				Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
+			});
+	  }
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+};
+
+
+//Controla o dialog de anuncio de servicos
+var anuncioCtrl = function ($scope, $modalInstance, user) {
+	$scope.user = user;
+	
+	$scope.ok = function () {
+		$modalInstance.dismiss('cancel');
+	};
+	
+	$scope.cancel = function () {
+		 $modalInstance.dismiss('cancel');
+	};
 };
 
 var limparUsuario = function(user) {

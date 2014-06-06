@@ -209,7 +209,7 @@ SoSCtrls.controller('PrestadoresCtrl',
 		$scope.maxRate = 10;
 		var urlPrestadores = 
 		//'http://soservices.vsnepomuceno.cloudbees.net/prestador';
-		 'http://soservices.vsnepomuceno.cloudbees.net/prestador/query';
+		 'http://soservices.vsnepomuceno.cloudbees.net/prestador';
 
 		//Filter and order
 		$scope.orderProp = '-avaliacao';

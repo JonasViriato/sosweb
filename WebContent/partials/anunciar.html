@@ -1,16 +1,16 @@
 <div>
         <div class="modal-header">
-            <h3>Qual serviço você quer oferecer?</h3>
+            <h3>Qual serviÃ§o você quer oferecer?</h3>
         </div>
         <form ng-submit="submit()">
           <div class="modal-body">
-            <label>Tipo de Serviço:</label><br>
-            <input type="text" ng-model="servico.tipo" required /><br>
-            <label>Descrição:</label><br>
-            <textarea ng-model="text" required></textarea>
-            <input type="email" ng-model="servico.descricao" required/><br>
+            <label>ServiÃ§o:</label><br>
+            <input type="text" data-ng-model="servico.nome_tipo_servico" typeahead="tipo.nome for tipo in tiposServicos | filter:$viewValue | limitTo:8"  required>
+			<br>
+            <label>DescriÃ§ão:</label><br>
+            <textarea ng-model="servico.descricao" required></textarea><br>
             <label>Valor:</label><br>
-            <input type="text" ng-model="servico.valor" required/><br>
+            <input type="number" ng-model="servico.valor" required/><br>
             
           </div>
           <div class="modal-footer">

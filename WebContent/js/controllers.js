@@ -29,6 +29,13 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 		    estado: ''
 	};
 	
+	$scope.servico = {
+			descricao: '',
+		    valor: 0.0,
+		    nome_tipo_servico: '',
+		    usuario_email: ''
+	};
+	
 
 	$scope.search = function() {
 		$location.path(
@@ -150,6 +157,7 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 				Authentication.login($scope.user);
 				Alerts.closeAll();
 				$scope.$apply();
+				Alerts.addAlert('Usuário cadastrado com sucesso!', 'success');
 				
 			}
 		}, function() {
@@ -166,9 +174,10 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 				    	$scope.prestador.email = $scope.user.email;
 				        return $scope.prestador;
 				    }
-				  }
+			  }
 			});
 			modalInstance.result.then(function () {
+				Alerts.addAlert('Prestador cadastrado com sucesso!', 'success');
 				$scope.openCadastroAnuncio();
 			}, 
 			function () {
@@ -182,12 +191,17 @@ SoSCtrls.controller('MainCtrl', ['$scope', '$http', '$location', '$modal', 'Aler
 			  templateUrl: 'partials/anunciar.html',
 			  controller: 'anuncioCtrl',
 			  resolve: {
-			    user: function () {
-			      return $scope.user;
+				servico: function () {
+					$scope.servico.usuario_email = $scope.user.email;
+			        return $scope.servico;
+			    },
+			    tiposServicos: function () {
+			        return $scope.tiposServicos;
 			    }
 			  }
 			});
 			modalInstance.result.then(function () {
+				Alerts.addAlert('Anuncio cadastrado com sucesso!', 'success');
 			}, 
 			function () {
 
@@ -207,9 +221,7 @@ SoSCtrls.controller('PrestadoresCtrl',
 		$scope.prestadores = [];
 
 		$scope.maxRate = 10;
-		var urlPrestadores = 
-		//'http://soservices.vsnepomuceno.cloudbees.net/prestador';
-		 'http://soservices.vsnepomuceno.cloudbees.net/prestador';
+		var urlPrestadores = 'http://soservices.vsnepomuceno.cloudbees.net/prestador';
 
 		//Filter and order
 		$scope.orderProp = '-avaliacao';
@@ -409,11 +421,23 @@ var cadastroPrestadorCtrl = function ($scope, $http, $modalInstance, Alerts, pre
 
 
 //Controla o dialog de anuncio de servicos
-var anuncioCtrl = function ($scope, $modalInstance, user) {
-	$scope.user = user;
+var anuncioCtrl = function ($scope, $http,$modalInstance, Alerts, servico, tiposServicos) {
+	$scope.servico = servico;
+	$scope.tiposServicos = tiposServicos;
 	
-	$scope.ok = function () {
-		$modalInstance.dismiss('cancel');
+	$scope.cadastrar = function () {
+		$http({
+			method : 'POST',
+			url : 'http://soservices.vsnepomuceno.cloudbees.net/servico',
+			data : $scope.servico,
+			headers: {'Content-Type': 'application/json'}
+		}).
+		success(function(data, status, headers, config) {
+			$modalInstance.close(data);
+		
+		}).error(function(data, status, headers, config) {
+			Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
+		});    
 	};
 	
 	$scope.cancel = function () {

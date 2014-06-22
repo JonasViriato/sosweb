@@ -446,10 +446,16 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
   
   $scope.logarFace = function() {
 		if (Authentication.checkLogged()) {
-			Alerts.addAlert('LOGGED', 'danger');
+			$scope.userAuth = authentication.getfacebookuser();
+			$scope.userAuth.then(function(result) { 
+				Alerts.addAlert('NOME: ' + Authentication.currentUser().nome, 'warning');
+			});   
 		} else {
 			Authentication.loginFace();
-			Alerts.addAlert('NOT LOGGED', 'danger');
+			$scope.userAuth = authentication.getfacebookuser();
+			$scope.userAuth.then(function(result) { 
+				Alerts.addAlert('NOME: ' + Authentication.currentUser().nome, 'warning');
+			});  
 		}
 
 	};

@@ -89,7 +89,7 @@ SoServices.service('Alerts', function () { //Alerts/Messages
 	// this.addAlert('Teste Info', 'info');
 });
 
-SoServices.factory('Authentication', function($localStorage){		
+SoServices.factory('Authentication', function($localStorage, $rootScope, $q){		
 	
 	var userAuth = {
 			nome: '',
@@ -151,18 +151,23 @@ SoServices.factory('Authentication', function($localStorage){
     	return userAuth;
     },
     loginFace: function() { 
-    	FB.login(function(response) {
-		   if (response.authResponse) {
-		     FB.api('/me', function(response) {
-		       console.log('Good to see you, ' + response.name + '.');
-		     });
-		   } else {
-		     console.log('User cancelled login or did not fully authorize.');
-		   }
-		 });
+    	FB.login(function(response) {		   
+		 }, {scope: 'email, name, id'});
     },
     checkLogged: function() {    	
     	return logged;
+    },
+    getFacebookUser: function() {  
+    	var deferred = $q.defer(); 
+    	FB.api('/me', function(response) {
+    		userAuth.nome = response.name;
+    		userAuth.email = response.email;
+    		userAuth.apiKey = response.id;
+    		$rootScope.$apply(function(){
+  	          deferred.resolve(userAuth);
+  	        });
+    	});
+    	return deferred.promise;
     }
   };
 });

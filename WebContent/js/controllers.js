@@ -446,7 +446,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
   
   $scope.logarFace = function() {
 		if (Authentication.checkLogged()) {
-			$scope.userAuth = authentication.getfacebookuser();
+			$scope.userAuth = Authentication.getFacebookUser();
 			$scope.userAuth.then(function(result) { 
 				Alerts.addAlert('NOME: ' + Authentication.currentUser().nome, 'warning');
 			});   

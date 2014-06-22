@@ -444,8 +444,9 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 	    } 
   };
   
-  $scope.logarFace = function () {	
-	  var logged = Authentication.checkLogged();
+  $scope.logarFace = function () {
+	  $scope.logged = false;
+	  Authentication.checkLogged($scope);
 	  if (logged){
 		  Alerts.addAlert('LOGGED', 'danger');
 	  } else {

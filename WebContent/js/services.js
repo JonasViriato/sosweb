@@ -151,12 +151,12 @@ SoServices.factory('Authentication', function($localStorage){
 		   }
 		 });
     },
-    checkLogged: function() {
+    checkLogged: function(scope) {
     	FB.getLoginStatus(function(response) {
     		if (response.status === 'connected') {
-    			return true;
+    			scope.logged = true;
     		} else {
-    			return false;
+    			scope.logged = false;
     		}
     	});
     }

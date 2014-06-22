@@ -452,7 +452,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 			});   
 		} else {
 			Authentication.loginFace();
-			$scope.userAuth = Authentication.getfacebookuser();
+			$scope.userAuth = Authentication.getFacebookUser();
 			$scope.userAuth.then(function(result) { 
 				Alerts.addAlert('NOME: ' + Authentication.currentUser().nome, 'warning');
 			});  

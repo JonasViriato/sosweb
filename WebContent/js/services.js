@@ -163,6 +163,7 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
     		userAuth.nome = response.name;
     		userAuth.email = response.email;
     		userAuth.apiKey = response.id;
+    		$localStorage.currentUserJson = angular.toJson(userAuth);
     		$rootScope.$apply(function(){
   	          deferred.resolve(userAuth);
   	        });

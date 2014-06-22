@@ -150,9 +150,20 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
     	userAuth = angular.fromJson($localStorage.currentUserJson);
     	return userAuth;
     },
-    loginFace: function() { 
-    	FB.login(function(response) {		   
-		 }, {scope: 'email, name, id'});
+    loginFace : function() {
+		FB.login(function(response) {	
+			if (response.authResponse) {
+				FB.getLoginStatus(function(response) {
+		    		if (response.status === 'connected') {
+		    			logged = true;
+		    		} else {
+		    			logged = false;
+		    		}
+		    	});
+			} else {
+	
+			}
+		}, {scope : 'email, name, id'});
     },
     checkLogged: function() {    	
     	return logged;

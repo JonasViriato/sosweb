@@ -151,19 +151,17 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
     	return userAuth;
     },
     loginFace : function() {
+    	var deferred = $q.defer(); 
 		FB.login(function(response) {	
 			if (response.authResponse) {
-				FB.getLoginStatus(function(response) {
-		    		if (response.status === 'connected') {
-		    			logged = true;
-		    		} else {
-		    			logged = false;
-		    		}
-		    	});
+				$rootScope.$apply(function(){
+		  	         deferred.resolve(login);
+		  	    });
 			} else {
-	
+				
 			}
 		}, {scope : 'email, name, id'});
+		return deferred.promise;
     },
     checkLogged: function() {    	
     	return logged;

@@ -451,11 +451,13 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 				Alerts.addAlert('NOME: ' + Authentication.currentUser().nome, 'warning');
 			});   
 		} else {
-			Authentication.loginFace();
-			$scope.userAuth = Authentication.getFacebookUser();
-			$scope.userAuth.then(function(result) { 
-				Alerts.addAlert('NOME: ' + Authentication.currentUser().nome, 'warning');
-			});  
+			$scope.login = Authentication.loginFace();
+			$scope.login.then(function(result) {
+				$scope.userAuth = Authentication.getFacebookUser();
+				$scope.userAuth.then(function(result) { 
+					Alerts.addAlert('NOME: ' + Authentication.currentUser().nome, 'warning');
+				});  
+			});			
 		}
 
 	};

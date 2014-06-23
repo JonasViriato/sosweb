@@ -115,6 +115,7 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
 		FB.getLoginStatus(function(response) {
     		if (response.status === 'connected') {
     			logged = true;
+    			userAuth.apiKey = response.authResponse.accessToken;
     		} else {
     			logged = false;
     		}
@@ -155,6 +156,11 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
     	var deferred = $q.defer(); 
 		FB.login(function(response) {	
 			if (response.authResponse) {
+				FB.getLoginStatus(function(response) {
+		    		if (response.status === 'connected') {
+		    			userAuth.apiKey = c
+		    		}
+		    	});
 				$rootScope.$apply(function(){
 		  	         deferred.resolve(login);
 		  	    });
@@ -172,7 +178,7 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
     	FB.api('/me', function(response) {
     		userAuth.nome = response.name;
     		userAuth.email = response.email;
-    		userAuth.apiKey = response.id;
+    		userAuth.apiKey = response.authResponse.accessToken;
     		$localStorage.currentUserJson = angular.toJson(userAuth);
     		$rootScope.$apply(function(){
   	          deferred.resolve(userAuth);

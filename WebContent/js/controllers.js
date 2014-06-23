@@ -444,41 +444,33 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 	    } 
   };
   
+  $scope.loginFace = function() {
+	  $scope.faceUser = Authentication.getFacebookUser();
+		$scope.faceUser.then(function(result) { 
+			$http({
+				method : 'POST',
+				url : 'http://soservices.vsnepomuceno.cloudbees.net/token/login/facebook',
+				data : Authentication.currentUser(),
+				headers: {'Content-Type': 'application/json'}
+			}).
+			success(function(data, status, headers, config) {
+				Authentication.login(Authentication.currentUser());
+				Alerts.closeAll();
+				$scope.$apply();
+	
+			}).error(function(data, status, headers, config) {
+				Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
+			});  
+		});   
+  };
+  
   $scope.logarFace = function() {
 		if (Authentication.checkLogged()) {
-			$scope.faceUser = Authentication.getFacebookUser();
-			$scope.faceUser.then(function(result) { 
-				$http({
-					method : 'POST',
-					url : 'http://soservices.vsnepomuceno.cloudbees.net/token/login/facebook',
-					data : Authentication.currentUser(),
-					headers: {'Content-Type': 'application/json'}
-				}).
-				success(function(data, status, headers, config) {
-					Authentication.login(Authentication.currentUser());
-		
-				}).error(function(data, status, headers, config) {
-					Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
-				});  
-			});   
+			$scope.loginFace();
 		} else {
 			$scope.login = Authentication.loginFace();
 			$scope.login.then(function(result) {
-				$scope.faceUser = Authentication.getFacebookUser();
-				$scope.faceUser.then(function(result) { 
-					$http({
-						method : 'POST',
-						url : 'http://soservices.vsnepomuceno.cloudbees.net/token/login/facebook',
-						data : Authentication.currentUser(),
-						headers: {'Content-Type': 'application/json'}
-					}).
-					success(function(data, status, headers, config) {
-						Authentication.login(Authentication.currentUser());
-			
-					}).error(function(data, status, headers, config) {
-						Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
-					});  
-				});  
+				$scope.loginFace();
 			});			
 		}
 

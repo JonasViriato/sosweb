@@ -455,7 +455,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 					headers: {'Content-Type': 'application/json'}
 				}).
 				success(function(data, status, headers, config) {
-					Alerts.addAlert(data.apiKey, 'danger');
+					Authentication.login(Authentication.currentUser());
 		
 				}).error(function(data, status, headers, config) {
 					Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
@@ -473,7 +473,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 						headers: {'Content-Type': 'application/json'}
 					}).
 					success(function(data, status, headers, config) {
-						Alerts.addAlert(data.apiKey, 'danger');
+						Authentication.login(Authentication.currentUser());
 			
 					}).error(function(data, status, headers, config) {
 						Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');

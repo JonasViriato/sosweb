@@ -101,6 +101,7 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
 	};
 	
 	var logged = false;
+	var login;
 	
 	window.fbAsyncInit = function() {
 		FB.init({

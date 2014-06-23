@@ -101,7 +101,7 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
 	};
 	
 	var logged = false;
-	var login;
+	var login = null;
 	
 	window.fbAsyncInit = function() {
 		FB.init({
@@ -160,11 +160,8 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
 		  	    });
 			} else {
 				console.log('User cancelled login or did not fully authorize.');
-				$rootScope.$apply(function(){
-		  	         deferred.resolve(login);
-		  	    });
 			}
-		}, {scope : 'email, name'});
+		});
 		return deferred.promise;
     },
     checkLogged: function() {    	

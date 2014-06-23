@@ -454,10 +454,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 				headers: {'Content-Type': 'application/json'}
 			}).
 			success(function(data, status, headers, config) {
-				Authentication.login(Authentication.currentUser());
-				Alerts.closeAll();
-				$scope.$apply();
-	
+				$modalInstance.close(data);
 			}).error(function(data, status, headers, config) {
 				Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
 			});  

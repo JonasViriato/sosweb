@@ -183,7 +183,7 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
     		userAuth.email = response.email;
     		$localStorage.currentUserJson = angular.toJson(userAuth);
     		$rootScope.$apply(function(){
-  	          deferred.resolve(userAuth);
+  	          deferred.resolve(faceUser);
   	        });
     	});
     	return deferred.promise;

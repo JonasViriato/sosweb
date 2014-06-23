@@ -158,7 +158,7 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
 		  	         deferred.resolve(login);
 		  	    });
 			} else {
-				
+				console.log('User cancelled login or did not fully authorize.');
 			}
 		}, {scope : 'email, name, id'});
 		return deferred.promise;

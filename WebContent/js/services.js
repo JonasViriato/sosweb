@@ -103,6 +103,7 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
 	var logged = false;
 	var login = null;
 	var faceUser = null;
+	var isLogged = null;
 	
 	window.fbAsyncInit = function() {
 		FB.init({
@@ -111,17 +112,7 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
 			// the session
 			xfbml : true, // parse social plugins on this page
 			version : 'v2.0' // use version 2.0
-		});		
-		
-		FB.getLoginStatus(function(response) {
-    		if (response.status === 'connected') {
-    			logged = true;
-    			userAuth.apiKey = response.authResponse.accessToken;
-    			$localStorage.currentUserJson = angular.toJson(userAuth);
-    		} else {
-    			logged = false;
-    		}
-    	});
+		});	
 	};
 
 	// Load the SDK asynchronously
@@ -173,8 +164,21 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
 		});
 		return deferred.promise;
     },
-    checkLogged: function() {    	
-    	return logged;
+    checkLogged: function() {    
+    	var deferred = $q.defer(); 
+    	FB.getLoginStatus(function(response) {
+    		if (response.status === 'connected') {
+    			logged = true;
+    			userAuth.apiKey = response.authResponse.accessToken;
+    			$localStorage.currentUserJson = angular.toJson(userAuth);
+    		} else {
+    			logged = false;
+    		}
+    		$rootScope.$apply(function(){
+    	          deferred.resolve(isLogged);
+    	    });
+    	});
+    	return deferred.promise;
     },
     getFacebookUser: function() {  
     	var deferred = $q.defer(); 
@@ -188,6 +192,9 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
   	        });
     	});
     	return deferred.promise;
+    },
+    isFaceLogged : function() {    	
+		return logged;
     }
   };
 });

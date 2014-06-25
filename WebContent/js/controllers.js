@@ -462,7 +462,9 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
   };
   
   $scope.logarFace = function() {
-		if (Authentication.checkLogged()) {
+	  $scope.isLogged = Authentication.checkLogged();
+	  $scope.isLogged.then(function(result) { 
+		if (Authentication.isFaceLogged()) {
 			$scope.loginFace();
 		} else {
 			$scope.login = Authentication.loginFace();
@@ -470,7 +472,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 				$scope.loginFace();
 			});			
 		}
-
+	  });
 	};
 
   $scope.cancel = function () {

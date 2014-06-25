@@ -113,6 +113,15 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
 			xfbml : true, // parse social plugins on this page
 			version : 'v2.0' // use version 2.0
 		});	
+		FB.getLoginStatus(function(response) {
+    		if (response.status === 'connected') {
+    			logged = true;
+    			userAuth.apiKey = response.authResponse.accessToken;
+    			$localStorage.currentUserJson = angular.toJson(userAuth);
+    		} else {
+    			logged = false;
+    		}
+    	});
 	};
 
 	// Load the SDK asynchronously

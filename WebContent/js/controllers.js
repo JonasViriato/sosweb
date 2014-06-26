@@ -89,6 +89,7 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico, Aut
 	
 	$scope.openLogin = function (fromAnuncio) {
 		var modalInstance;
+		$route.reload();
 		modalInstance = $modal.open({
 			  templateUrl: 'partials/login.html',
 			  controller: 'LoginCtrl',

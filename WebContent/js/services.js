@@ -97,7 +97,8 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
 		    senha: null,
 		    apiKey: '',
 		    logado: false,
-		    confirmarsenha: null
+		    confirmarsenha: null,
+		    id:''
 	};
 	
 	var logged = false;
@@ -195,6 +196,7 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
     		userAuth = angular.fromJson($localStorage.currentUserJson);
     		userAuth.nome = response.name;
     		userAuth.email = response.email;
+    		userAuth.id = response.id;
     		$localStorage.currentUserJson = angular.toJson(userAuth);
     		$rootScope.$apply(function(){
   	          deferred.resolve(faceUser);

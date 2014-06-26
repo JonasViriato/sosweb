@@ -100,11 +100,11 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico, Aut
 		});
 		modalInstance.result.then(function(data) {
 			if (data != '') {
+				$scope.user = Authentication.currentUser();
 				$scope.user.logado = true;
 				$scope.user.senha='';
 				$scope.user.apiKey = data.apiKey;
 				Authentication.login($scope.user);
-				$scope.user = Authentication.currentUser();
 				Alerts.closeAll();
 				$scope.$apply();
 				if (fromAnuncio) {

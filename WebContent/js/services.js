@@ -183,6 +183,9 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
     		} else {
     			logged = false;
     		}
+    		$rootScope.$apply(function(){
+    	          deferred.resolve(isLogged);
+    	    });
     	});
     	return deferred.promise;
     },

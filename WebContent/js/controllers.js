@@ -104,6 +104,7 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico, Aut
 				$scope.user.senha='';
 				$scope.user.apiKey = data.apiKey;
 				Authentication.login($scope.user);
+				$scope.user = Authentication.currentUser();
 				Alerts.closeAll();
 				$scope.$apply();
 				if (fromAnuncio) {

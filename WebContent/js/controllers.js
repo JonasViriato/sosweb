@@ -299,6 +299,22 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico, Aut
 
 		});
 	};
+	
+	$scope.atualizarSenha = function () {
+		$http({
+			method: 'GET',
+			url: 'http://soservices.vsnepomuceno.cloudbees.net/prestador/email?email='+$scope.user.email}).
+	    	success(function(data, status, headers, config, prest) {
+	    		if (data.senha != '') {
+	    			$scope.openEditPrestador(data);
+	    		} else {
+	    			Alerts.addAlert('Você ainda não é um prestador, cadastre um anúncio!', 'warning');
+	    		}
+		    }).
+		    error(function(data, status, headers, config) {		
+		    	Alerts.addAlert('Erro: ' + status +' '+ data, 'danger');
+		    });	
+	};
 }]);
 
 /* Ctrl Busca de prestadores */
@@ -441,6 +457,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 				headers: {'Content-Type': 'application/json'}
 			}).
 			success(function(data, status, headers, config) {
+				Authentication.login($scope.user);
 				$modalInstance.close(data);
 	
 			}).error(function(data, status, headers, config) {

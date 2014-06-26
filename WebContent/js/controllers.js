@@ -471,8 +471,6 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 	  $scope.progress = true;
 	  $scope.$apply();
 	  $scope.isLogged.then(function(result) { 
-		$scope.progress = false;
-		$scope.$apply();
 		if (Authentication.isFaceLogged()) {
 			$scope.loginFace();
 		} else {
@@ -481,6 +479,8 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 				$scope.loginFace();
 			});			
 		}
+		$scope.progress = false;
+		$scope.$apply();		
 	  });
 	};
 

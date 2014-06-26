@@ -130,6 +130,7 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico, Aut
 			$scope.user.senha='';
 			$scope.user.logado = false;
 			$scope.user.apiKey = '';
+			$scope.user.id = '';
 			Authentication.logout($scope.user);
 			$scope.$apply();
 			$location.path('/home');

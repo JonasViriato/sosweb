@@ -148,7 +148,6 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
     logout: function(userLogout) { 
     	userAuth = userLogout;
     	$localStorage.currentUserJson = angular.toJson(userAuth);
-    	delete $localStorage.currentUserJson;
     },
     isLoggedIn: function() { userAuth.logado; },
     currentUser: function() { 

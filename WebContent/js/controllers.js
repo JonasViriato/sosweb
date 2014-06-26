@@ -468,10 +468,8 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
   $scope.logarFace = function() {
 	  $scope.isLogged = Authentication.checkLogged();
 	  $scope.progress = true;
-	  $scope.$apply();
 	  $scope.isLogged.then(function(result) { 
 		$scope.progress = false;
-		$scope.$apply();
 		if (Authentication.isFaceLogged()) {
 			$scope.loginFace();
 		} else {

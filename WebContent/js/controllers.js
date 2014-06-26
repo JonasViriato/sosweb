@@ -424,6 +424,7 @@ SoSCtrls.controller('MyCtrl2', ['$scope', function($scope) {
 var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts, user) {
 	
   $scope.user = user;
+  $scope.user = '';
   $scope.progress = false;
 			
   $scope.logar = function () {	 

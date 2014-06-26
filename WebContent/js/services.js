@@ -170,7 +170,7 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
 			} else {
 				console.log('User cancelled login or did not fully authorize.');
 			}
-		});
+		}, {scope: 'email'});
 		return deferred.promise;
     },
     checkLogged: function() {    
@@ -191,7 +191,7 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
     },
     getFacebookUser: function() {  
     	var deferred = $q.defer(); 
-    	FB.api('/me', function(response) {
+    	FB.api('/me', {fields: 'name, id, email'}, function(response) {
     		userAuth = angular.fromJson($localStorage.currentUserJson);
     		userAuth.nome = response.name;
     		userAuth.email = response.email;

@@ -301,19 +301,25 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico, Aut
 	};
 	
 	$scope.atualizarSenha = function () {
-		$http({
-			method: 'GET',
-			url: 'http://soservices.vsnepomuceno.cloudbees.net/prestador/email?email='+$scope.user.email}).
-	    	success(function(data, status, headers, config, prest) {
-	    		if (data.senha != '') {
-	    			$scope.openEditPrestador(data);
-	    		} else {
-	    			Alerts.addAlert('Você ainda não é um prestador, cadastre um anúncio!', 'warning');
-	    		}
-		    }).
-		    error(function(data, status, headers, config) {		
-		    	Alerts.addAlert('Erro: ' + status +' '+ data, 'danger');
-		    });	
+		var modalInstance;
+		modalInstance = $modal.open({
+			templateUrl: 'partials/atualizarSenha.html',
+			  controller: 'atualizarSenhaCtrl',
+			  resolve: {				   
+				    apiKey: function () {
+				    	return $scope.user.apiKey;
+				    },
+				    email: function () {
+				    	return $scope.user.email;
+				    }
+			  }
+			});
+			modalInstance.result.then(function () {
+				Alerts.addAlert('Senha atualizada com sucesso!', 'success');
+			}, 
+			function () {
+
+		});
 	};
 }]);
 
@@ -792,3 +798,48 @@ var limparPrestador = function(prestador) {
   	prestador.cidade = '';
   	prestador.estado = '';
 };
+
+var atualizarSenhaCtrl = function ($scope, $http, $modalInstance, Alerts, apiKey, email) {
+	
+	  $scope.apiKey = apiKey;
+	  $scope.edit = true;	
+	  $scope.senha = {
+			  senhaAntiga: '',
+			  novaSenha: '',
+			  confirmarsenha: '',
+			  email:''
+	  };
+	  
+	  
+
+	  $scope.atualizar = function() {
+
+		if ($scope.senha.confirmarsenha != ''
+				&& $scope.senha.confirmarsenha != null
+				&& $scope.senha.novaSenha != ''
+				&& $scope.senha.novaSenha != null) {
+			if (angular.equals($scope.senha.novaSenha, $scope.senha.confirmarsenha)) {
+				$scope.senha.email = email;
+				$http({
+					method : 'PUT',
+					url : 'http://soservices.vsnepomuceno.cloudbees.net/prestador/atualizarSenha',
+					data : $scope.senha,
+					headers : {
+						'Content-Type' : 'application/json',
+						'token-api' : $scope.apiKey
+					}
+					}).success(function(data, status, headers, config) {
+						$modalInstance.close(data);
+			        }).error(function(data, status, headers, config) {
+				        Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
+			        });
+			}else {
+		    	Alerts.addAlert('Senha e confirmaÃ§ão diferentes!');
+			}
+		}
+	};
+
+	  $scope.cancel = function () {
+	    $modalInstance.dismiss('cancel');
+	  };
+	};

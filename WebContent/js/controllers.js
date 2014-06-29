@@ -959,7 +959,7 @@ SoSCtrls.controller('ForumPrestCtrl', [ '$scope', '$route', '$http', '$location'
 				
 				$http({
 					method: 'GET',
-					url: 'http://localhost:8080/sos-api/forum/servico?id='+$scope.servicoId}).
+					url: 'http://soservices.vsnepomuceno.cloudbees.net/forum/servico?id='+$scope.servicoId}).
 			    	success(function(data, status, headers, config) {
 			    		$scope.forum = data;			    		
 				    }).
@@ -976,7 +976,7 @@ SoSCtrls.controller('ForumPrestCtrl', [ '$scope', '$route', '$http', '$location'
 						};
 						$http({
 							method : 'PUT',
-							url : 'http://localhost:8080/sos-api/forum/resposta?id='+id,
+							url : 'http://soservices.vsnepomuceno.cloudbees.net/forum/resposta?id='+id,
 							data : $scope.resposta,
 							headers : {
 								'Content-Type' : 'application/json',

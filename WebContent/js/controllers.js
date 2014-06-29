@@ -901,7 +901,7 @@ SoSCtrls.controller('AvaliacoesPrestCtrl', [ '$scope', '$route', '$http', '$loca
 				
 				$http({
 					method: 'GET',
-					url: 'http://localhost:6652/sos-api/avaliacao/email?email='+ $scope.email}).
+					url: 'http://soservices.vsnepomuceno.cloudbees.net/avaliacao/email?email='+ $scope.email}).
 			    	success(function(data, status, headers, config) {
 			    		$scope.avaliacoes = data;
 			    		$scope.prestador = data.usuario;
@@ -923,7 +923,7 @@ SoSCtrls.controller('AvaliacoesPrestCtrl', [ '$scope', '$route', '$http', '$loca
 						};
 						$http({
 							method : 'PUT',
-							url : 'http://localhost:6652/sos-api/avaliacao/replica?id='+id,
+							url : 'http://soservices.vsnepomuceno.cloudbees.net/avaliacao/replica?id='+id,
 							data : $scope.replica,
 							headers : {
 								'Content-Type' : 'application/json',

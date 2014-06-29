@@ -896,37 +896,47 @@ SoSCtrls.controller('AvaliacoesPrestCtrl', [ '$scope', '$route', '$http', '$loca
 				$scope.avaliacoes = new Array();
 				$scope.prestador = '';
 				$scope.orderProp = '-id';
+				$scope.media = 0.0;
+				$scope.replicaText='';
 				
 				$http({
 					method: 'GET',
-					url: 'http://soservices.vsnepomuceno.cloudbees.net/avaliacao/email?email='+ $scope.email}).
+					url: 'http://localhost:6652/sos-api/avaliacao/email?email='+ $scope.email}).
 			    	success(function(data, status, headers, config) {
-			    		$scope.prestador = data;
-			    		$scope.avaliacoes = $scope.prestador.avaliacoes;
-
+			    		$scope.avaliacoes = data;
+			    		$scope.prestador = data.usuario;
+			    		
+			    		for (var i =0; i < $scope.avaliacoes.length; i++) {
+			    			$scope.media += parseFloat($scope.avaliacoes[i].nota);
+			    		}
+			    		$scope.media /= $scope.avaliacoes.length;
 				    }).
 				    error(function(data, status, headers, config) {
 				     	Alerts.addAlert('Erro: ' + status +' '+ data, 'danger');
 				    });
 				
-				$scope.responder = function(id, resposta) {
-					$scope.avaliacao = {
-							replica: resposta,	
-							email: $scope.email
-					};
-					$http({
-						method : 'PUT',
-						url : 'http://soservices.vsnepomuceno.cloudbees.net/avaliacao/replica?id='+id,
-						data : $scope.avaliacao,
-						headers : {
-							'Content-Type' : 'application/json',
-							'token-api' : $scope.apiKey
-						}
-						}).success(function(data, status, headers, config) {
-							$route.reload();
-				        }).error(function(data, status, headers, config) {
-					        Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
-				        });
+				$scope.responder = function(id, replicaText) {
+					if (replicaText != '' && replicaText != null) {
+						$scope.replica = {
+								replica: replicaText,	
+								email: $scope.email
+						};
+						$http({
+							method : 'PUT',
+							url : 'http://localhost:6652/sos-api/avaliacao/replica?id='+id,
+							data : $scope.replica,
+							headers : {
+								'Content-Type' : 'application/json',
+								'token-api' : $scope.apiKey
+							}
+							}).success(function(data, status, headers, config) {
+								$route.reload();
+					        }).error(function(data, status, headers, config) {
+						        Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
+					        });
+					} else {
+						Alerts.addAlert('Replica deve ser preenchida!');
+					}
 				};
 		} 
 ]);

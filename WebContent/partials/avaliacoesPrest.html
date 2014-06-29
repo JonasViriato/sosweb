@@ -1,0 +1,49 @@
+
+<div class="container text-justify">
+
+	<div data-ng-show="(servicos.length > 0)" class="row">
+
+		<div class="col-lg-12">
+			<h1 class="page-header">
+				Avaliações dos Usuários
+			</h1>
+		</div>
+
+	</div>
+	<div data-ng-show="(avaliacoes.length == 0)" class="row">
+
+		<div class="col-lg-12">
+			<h1 class="page-header">
+				Voc&ecirc; ainda n&atilde;o possui avaliações!!
+			</h1>
+		</div>
+
+	</div>
+	
+	<div class="list-group">
+		<div class="list-group-item row"
+			data-ng-repeat="avaliacao in avaliacoes | filter:query | orderBy:orderProp">
+		   		<div class="col-lg-1 col-md-1"></div>
+				<div class="col-lg-10 col-md-10">
+					<h3>{{avaliacao.usuario.nome}}</h3>
+					<h4>Depoimento: {{avaliacao.depoimento}}</h4>
+					<h4>Nota: {{avaliacao.nota}}</h4>
+					<p data-ng-show="(avaliacao.replica != '')">Replica: {{avaliacao.replica}}</p>
+					<div data-ng-show="(avaliacao.replica === '')" class="row">
+						<div class="col-xs-12">
+							<label>Replica:</label><br>
+							<textarea ng-model="avaliacao.replica" rows="5" class="form-control" required></textarea>
+							<br>
+						</div>
+					</div>
+				    <button data-ng-show="(avaliacao.replica === '')" class="btn btn-primary"
+				        data-ng-click="responder(avaliacao.id, avaliacao.replica)">Responder <span
+						class="glyphicon glyphicon-chevron-right"></span></button> 
+					
+				</div>
+			<hr>
+		</div>
+	</div>
+	
+
+</div>

@@ -321,6 +321,24 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico, Aut
 
 		});
 	};
+	
+	$scope.avaliacoes = function () {
+		$http({
+			method: 'GET',
+			url: 'http://soservices.vsnepomuceno.cloudbees.net/prestador/email?email='+$scope.user.email}).
+	    	success(function(data, status, headers, config, prest) {
+	    		if (data.cpf != data.email) {
+	    			$location.path('/avaliacoesPrest/email/'+$scope.user.email+
+	    					'/apiKey/'+$scope.user.apiKey);
+	    		} else {
+	    			Alerts.addAlert('Você ainda não é um prestador, cadastre um anúncio!', 'warning');
+	    		}
+		    }).
+		    error(function(data, status, headers, config) {		
+		    	Alerts.addAlert('Erro: ' + status +' '+ data, 'danger');
+		    });	
+	};
+	
 }]);
 
 /* Ctrl Busca de prestadores */
@@ -670,18 +688,28 @@ SoSCtrls.controller('PrestadoresAnunciosCtrl', [ '$scope', '$route', '$http', '$
 			};
 		
 			$scope.remover = function (id) {
-				$http({
-					method : 'DELETE',
-					url : 'http://soservices.vsnepomuceno.cloudbees.net/servico/'+id,
-					headers: {'Content-Type': 'application/json', 
-								'token-api': $scope.apiKey}
-				}).
-				success(function(data, status, headers, config) {
-					$route.reload();
-					Alerts.addAlert('ServiÃ§o removido com sucesso', 'success');
-				}).error(function(data, status, headers, config) {
-					Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
-				});    
+				var modalInstance;
+				modalInstance = $modal.open({
+					  templateUrl: 'partials/confirmDialog.html',
+					  controller: 'confirmCtrl',
+					  resolve: {				
+					  }
+					});
+					modalInstance.result.then(function () {
+						$http({
+							method : 'DELETE',
+							url : 'http://soservices.vsnepomuceno.cloudbees.net/servico/'+id,
+							headers: {'Content-Type': 'application/json', 
+										'token-api': $scope.apiKey}
+						}).
+						success(function(data, status, headers, config) {
+							$route.reload();
+							Alerts.addAlert('ServiÃ§o removido com sucesso', 'success');
+						}).error(function(data, status, headers, config) {
+							Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
+						}); 
+					}, 
+					function () {	});						
 			};
 			
 			$scope.openEditarAnuncio = function () {
@@ -710,6 +738,14 @@ SoSCtrls.controller('PrestadoresAnunciosCtrl', [ '$scope', '$route', '$http', '$
 				});
 					
 			};			
+			$scope.verForum = function (id) {
+				$scope.servico.id = id;
+				$scope.servico.descricao=descricao;
+				$scope.servico.valor = valor;
+				$scope.servico.nome_tipo_servico=tipoServico;
+				$scope.servico.usuario_email = $scope.email;
+				$scope.openEditarAnuncio();
+			};
 		
 		} 
 ]);
@@ -839,7 +875,60 @@ var atualizarSenhaCtrl = function ($scope, $http, $modalInstance, Alerts, apiKey
 		}
 	};
 
-	  $scope.cancel = function () {
-	    $modalInstance.dismiss('cancel');
-	  };
-	};
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+};
+
+/* Ctrl Busca de prestadores */
+SoSCtrls.controller('AvaliacoesPrestCtrl', [ '$scope', '$route', '$http', '$location', '$modal',
+		'$routeParams', 'Alerts',
+		function($scope, $route, $http, $location, $modal, $routeParams, Alerts) {
+				
+				$scope.email = $routeParams.email;
+				$scope.apiKey = $routeParams.apiKey;
+				$scope.avaliacao = {
+						id: 0,
+						depoimento: '',
+						replica: '',
+						nota: 0
+				};
+				$scope.avaliacoes = new Array();
+				$scope.prestador = '';
+				$scope.orderProp = '-id';
+				
+				$http({
+					method: 'GET',
+					url: 'http://soservices.vsnepomuceno.cloudbees.net/avaliacao/email?email='+ $scope.email}).
+			    	success(function(data, status, headers, config) {
+			    		$scope.prestador = data;
+			    		$scope.avaliacoes = $scope.prestador.avaliacoes;
+
+				    }).
+				    error(function(data, status, headers, config) {
+				     	Alerts.addAlert('Erro: ' + status +' '+ data, 'danger');
+				    });
+				
+				$scope.responder = function(id, resposta) {
+					$scope.avaliacao = {
+							replica: resposta,	
+							email: $scope.email
+					};
+					$http({
+						method : 'PUT',
+						url : 'http://soservices.vsnepomuceno.cloudbees.net/avaliacao/replica?id='+id,
+						data : $scope.avaliacao,
+						headers : {
+							'Content-Type' : 'application/json',
+							'token-api' : $scope.apiKey
+						}
+						}).success(function(data, status, headers, config) {
+							$route.reload();
+				        }).error(function(data, status, headers, config) {
+					        Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
+				        });
+				};
+		} 
+]);
+	
+	

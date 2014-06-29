@@ -943,14 +943,23 @@ SoSCtrls.controller('ForumPrestCtrl', [ '$scope', '$route', '$http', '$location'
 		'$routeParams', 'Alerts',
 		function($scope, $route, $http, $location, $modal, $routeParams, Alerts) {
 				
+				$scope.post = {
+						id: 0,
+						mensagem: '',
+						resposta: '',
+						nomeUsuario: ''
+				};
+				$scope.forum = new Array();
+				$scope.orderProp = '-id';
+				$scope.respostaText='';
+	
 				$scope.email = $routeParams.email;
 				$scope.apiKey = $routeParams.apiKey;
 				$scope.servicoId = $routeParams.servicoId;
-				$scope.forum = '';
 				
 				$http({
 					method: 'GET',
-					url: 'http://soservices.vsnepomuceno.cloudbees.net/forum?id='+$scope.servicoId}).
+					url: 'http://localhost:8080/sos-api/forum/servico?id='+$scope.servicoId}).
 			    	success(function(data, status, headers, config) {
 			    		$scope.forum = data;			    		
 				    }).
@@ -958,8 +967,29 @@ SoSCtrls.controller('ForumPrestCtrl', [ '$scope', '$route', '$http', '$location'
 				     	Alerts.addAlert('Erro: ' + status +' '+ data, 'danger');
 				    });
 				
-				$scope.responder = function(id, replicaText) {
-					
+				
+				$scope.responder = function(id, respostaText) {
+					if (respostaText != '' && respostaText != null) {
+						$scope.resposta = {
+								resposta: respostaText,	
+								email: $scope.email
+						};
+						$http({
+							method : 'PUT',
+							url : 'http://localhost:8080/sos-api/forum/resposta?id='+id,
+							data : $scope.resposta,
+							headers : {
+								'Content-Type' : 'application/json',
+								'token-api' : $scope.apiKey
+							}
+							}).success(function(data, status, headers, config) {
+								$route.reload();
+					        }).error(function(data, status, headers, config) {
+						        Alerts.addAlert('Erro: ' + status + ' ' + data, 'danger');
+					        });
+					} else {
+						Alerts.addAlert('Resposta deve ser preenchida!');
+					}
 				};
 		} 
 ]);

@@ -739,12 +739,9 @@ SoSCtrls.controller('PrestadoresAnunciosCtrl', [ '$scope', '$route', '$http', '$
 					
 			};			
 			$scope.verForum = function (id) {
-				$scope.servico.id = id;
-				$scope.servico.descricao=descricao;
-				$scope.servico.valor = valor;
-				$scope.servico.nome_tipo_servico=tipoServico;
-				$scope.servico.usuario_email = $scope.email;
-				$scope.openEditarAnuncio();
+				$location.path('/forumPrest/email/'+$scope.user.email+
+    					'/apiKey/'+$scope.user.apiKey+
+    					'/servicoId/'+id);
 			};
 		
 		} 
@@ -937,6 +934,32 @@ SoSCtrls.controller('AvaliacoesPrestCtrl', [ '$scope', '$route', '$http', '$loca
 					} else {
 						Alerts.addAlert('Replica deve ser preenchida!');
 					}
+				};
+		} 
+]);
+
+/* Ctrl Busca de prestadores */
+SoSCtrls.controller('ForumPrestCtrl', [ '$scope', '$route', '$http', '$location', '$modal',
+		'$routeParams', 'Alerts',
+		function($scope, $route, $http, $location, $modal, $routeParams, Alerts) {
+				
+				$scope.email = $routeParams.email;
+				$scope.apiKey = $routeParams.apiKey;
+				$scope.servicoId = $routeParams.servicoId;
+				$scope.forum = '';
+				
+				$http({
+					method: 'GET',
+					url: 'http://soservices.vsnepomuceno.cloudbees.net/forum?id='+$scope.servicoId}).
+			    	success(function(data, status, headers, config) {
+			    		$scope.forum = data;			    		
+				    }).
+				    error(function(data, status, headers, config) {
+				     	Alerts.addAlert('Erro: ' + status +' '+ data, 'danger');
+				    });
+				
+				$scope.responder = function(id, replicaText) {
+					
 				};
 		} 
 ]);

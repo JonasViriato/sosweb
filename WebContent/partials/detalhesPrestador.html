@@ -1,0 +1,18 @@
+
+						<!-- this is the confusing part. we have to point the map marker directive
+						  at an existing google.maps.Marker object, so it can hook up events -->
+						<div ui-map-marker="marker"
+						  ui-event="{'map-click': 'openMarkerInfo(marker)'}">
+						</div>
+						<div ui-map-info-window="infoWindow" style="max-width: 200px;">
+							<div data-ng-show="currentMarkerIsService">
+								<p>
+									{{servico.prestador.nome}}
+									<br>
+									{{servico.prestador.email}} - {{servico.prestador.telefone}}
+								</p>
+								<p>
+									<span data-ng-show="servico.tipoServico.valorado"><strong>R$ {{servico.valor}}</strong></span>
+								</p>
+							</div>
+						</div>

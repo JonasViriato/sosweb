@@ -16,7 +16,7 @@ SoServices.factory('ServiceTpServico', ['$http', 'Alerts',
 			getTiposServicos: function() {
        			return $http.get(url).
 				error(function(data, status) {
-			     	Alerts.addAlert('ServiceTpServico Erro: ' + status +' '+ data, 'danger');
+			     	Alerts.add('ServiceTpServico Erro: ' + status +' '+ data, 'danger');
 			    }).
 			    then(function(result) {
            			return result.data;
@@ -25,7 +25,7 @@ SoServices.factory('ServiceTpServico', ['$http', 'Alerts',
      		getIdByName: function(strName) {
        			return $http.get(url).
 				error(function(data, status) {
-			     	Alerts.addAlert('ServiceTpServico Erro: ' + status +' '+ data, 'danger');
+			     	Alerts.add('ServiceTpServico Erro: ' + status +' '+ data, 'danger');
 			    }).
 			    then(function(result) {
 			    	var tiposServicos = result.data;
@@ -44,50 +44,168 @@ SoServices.factory('ServiceTpServico', ['$http', 'Alerts',
 SoServices.factory('ServicePrestadores', ['$http', 'Alerts',
 	function($http, Alerts){
 		return {
-			getPrestadores: function(idTipoServico, lat, lng, raio, successCallback) {
+			getServicos: function(idTipoServico, lat, lng, raio, successCallback) {
        			$http(
 				{
-					method: 'GET',//POST ??
-					url: 'http://soservices.vsnepomuceno.cloudbees.net/prestador/query?'+
+					method: 'GET',
+					url: 'http://soservices.vsnepomuceno.cloudbees.net/servico/query?'+
 					'tipo_servico_id='+idTipoServico+
 					'&latitude='+lat+
 					'&longitude='+lng+
 					'&distancia='+raio,
-					headers: {'Content-Type': 'application/jsonp'}
+					headers: {'Content-Type': 'application/json'}
 				}).
 		    	success(successCallback).
 			    error(function(data, status, headers, config) {
-			     	Alerts.addAlert('ServicePrestadores: Erro -> ' + status +' '+ data, 'danger');
+			     	Alerts.add('ServicePrestadores: Erro -> ' + status +' '+ data, 'danger');
 			    });
-     		}
+     		},
+			getServicosPrestador: function(email, successCallback) {
+       			$http(
+				{
+					method: 'GET',
+					url: 'http://soservices.vsnepomuceno.cloudbees.net/servico/email?email='+email,
+					headers: {'Content-Type': 'application/json'}
+				}).
+		    	success(successCallback).
+			    error(function(data, status, headers, config) {
+			     	Alerts.add('ServicePrestadores: Erro -> ' + headers +' '+ status, 'danger');
+			    });
+     		},
+			getPrestadores: function(successCallback) {
+       			$http(
+				{
+					method: 'GET',
+					url: 'http://soservices.vsnepomuceno.cloudbees.net/prestador',
+					headers: {'Content-Type': 'application/json'}
+				}).
+		    	success(successCallback).
+			    error(function(data, status, headers, config) {
+			     	Alerts.add('ServicePrestadores: Erro -> ' + status +' '+ data, 'danger');
+			    });
+			},
+			getPrestador: function(email, successCallback) {
+       			$http(
+				{
+					method: 'GET',
+					url: 'http://soservices.vsnepomuceno.cloudbees.net/prestador/email?email='+email,
+					headers: {'Content-Type': 'application/json'}
+				}).
+		    	success(successCallback).
+			    error(function(data, status, headers, config) {
+			     	Alerts.add('ServicePrestadores: Erro -> ' + status +' '+ data, 'danger');
+			    });
+			},
+			getAvaliacoes: function(email, successCallback) {
+       			$http(
+				{
+					method: 'GET',
+					url: 'http://soservices.vsnepomuceno.cloudbees.net/avaliacao/email?email='+email,
+					headers: {'Content-Type': 'application/json'}
+				}).
+		    	success(successCallback).
+			    error(function(data, status, headers, config) {
+			     	Alerts.add('ServicePrestadores: Erro -> ' + status +' '+ data, 'danger');
+			    });
+			}		
 		}
 	}
 ]);
 
-SoServices.service('Alerts', function () { //Alerts/Messages	
-	var alerts = [];
-	this.addAlert = function (strMsg, type) {
-		alerts.push({"msg": strMsg, "type": type});
-	};
+SoServices.service('ServiceServicos', ['$http', 'Alerts',
+	function($http, Alerts){
+		return {
+			getServicos: function(successCallback) {
+       			$http(
+				{
+					method: 'GET',
+					url: 'http://soservices.vsnepomuceno.cloudbees.net/servico',
+					headers: {'Content-Type': 'application/json'}
+				}).
+		    	success(successCallback).
+			    error(function(data, status, headers, config) {
+			     	Alerts.add('ServicePrestadores: Erro -> ' + status +' '+ data, 'danger');
+			    });
+     		},
+			getServico: function(idServico, successCallback) {
+       			$http(
+				{
+					method: 'GET',
+					url: 'http://soservices.vsnepomuceno.cloudbees.net/servico/'+idServico,
+					headers: {'Content-Type': 'application/json'}
+				}).
+		    	success(successCallback).
+			    error(function(data, status, headers, config) {
+			     	Alerts.add('ServicePrestadores: Erro -> ' + status +' '+ data, 'danger');
+			    });
+     		}		
+		}
+	}
+]);
 
-	this.removeAlert = function(index) {
-		alerts.splice(index, 1);
-	};
+SoServices.service('Alerts', ['$rootScope', '$timeout',
+	function($rootScope, $timeout) {
+		var alertService;
+		$rootScope.alerts = [];
+		return alertService = {
+			add: function(msg, type) {
+				$timeout(
+					function(){alertService.closeAlertIdx(0);},
+					5000);
 
-	this.getAll = function() {
-		return alerts;
-	};
-	
-	this.closeAll = function() {
-		while (alerts.length > 0) {
-			alerts.splice(0, 1);
-		}		
-	};
+			    return $rootScope.alerts.push({
+					type: type,
+					msg: msg,
+					close: function() {
+						return alertService.closeAlert(this);
+					}
+			    });
+			},
+			closeAlert: function(alert) {
+				return this.closeAlertIdx($rootScope.alerts.indexOf(alert));
+			},
+			closeAlertIdx: function(index) {
+				return $rootScope.alerts.splice(index, 1);
+			},
+			clear: function(){
+				$rootScope.alerts = [];
+			}
+		};
+	}
+]);
 
-	// this.addAlert('Teste Danger', 'danger');
-	// this.addAlert('Teste Success', 'success');
-	// this.addAlert('Teste Info', 'info');
-});
+// SoServices.service('GMap', ['$rootScope',
+// 	function($rootScope) {
+// 		var GMap;
+// 		$rootScope.currentMarker = '';
+// 		$rootScope.myInfoWindow = '';
+// 		return GMap = {
+// 			openMarkerInfo : function(marker) {
+// 				$rootScope.currentMarker = marker;
+// 				$rootScope.currentMarkerIsService = (typeof $scope.currentMarker.servico !== 'undefined');
+// 				$rootScope.myInfoWindow.open($scope.sosMap, marker);
+// 			}
+// 		};
+// 	}
+// ]);
+
+SoServices.service('ServiceForum', ['$http', 'Alerts',
+	function($http, Alerts){
+		return {
+			getForum : function(idServico, successCallback) {
+       			$http({
+					method: 'GET',
+					url: 'http://soservices.vsnepomuceno.cloudbees.net/forum/servico/'+idServico,
+					headers: {'Content-Type': 'application/json'}
+				}).
+				success(successCallback).
+				error(function(data, status, headers, config) {
+			     	Alerts.add('ServiceForum: Erro -> ' + status +' '+ data, 'danger');
+				});
+     		}	
+		}
+	}
+]);
 
 SoServices.factory('Authentication', function($localStorage, $rootScope, $q){		
 	

@@ -98,6 +98,7 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico,
 				$scope.user.logado = true;
 				$scope.user.senha='';
 				$scope.user.apiKey = data.apiKey;
+				$scope.user.nome = data.usuario.nome;
 				Authentication.login($scope.user);
 				//Alerts.closeAll();
 				$scope.$apply();
@@ -150,6 +151,7 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico,
 				$scope.user.senha='';
 				$scope.user.confirmarsenha='';
 				$scope.user.apiKey = data.apiKey;
+				$scope.user.nome = data.usuario.nome;
 				Authentication.login($scope.user);
 				//Alerts.closeAll();
 				$scope.$apply();

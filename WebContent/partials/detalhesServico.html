@@ -86,7 +86,7 @@
 									</div>
 
 									<textarea class="form-control" rows="2" data-ng-show="user.logado"
-										style="resize:none" ng-model="mensagem"
+										style="resize:none" ng-model="pergunta"
 										id="pergunta" placeholder="Escreva sua pergunta..."></textarea>
 									<textarea class="form-control" rows="1" readonly id="pergunta"
 										data-ng-hide="user.logado" data-ng-click="openLogin()"
@@ -94,6 +94,9 @@
 									<a href class="input-group-addon" style="text-decoration: none" data-ng-show="user.logado" data-ng-click="post()">
 										Enviar Pergunta
 									</a>
+							    </div>
+							    <div data-ng-show="mensagem != ''">
+							    	<p class="bg-success">{{mensagem}}</p>
 							    </div>
 							</span>
 							<span class="list-group-item"
@@ -110,11 +113,11 @@
 										</div>
 									</div>
 								</span>
-								<blockquote>
+								<blockquote data-ng-show="post.resposta">
 									<span style="font-size: 10pt;">
 										<p>
-										<span class="glyphicon glyphicon-sm glyphicon-comment"></span>
-										{{post.resposta}}
+											<span class="glyphicon glyphicon-sm glyphicon-comment"></span>
+											{{post.resposta}}
 										</p>
 									</span>
 								</blockquote>

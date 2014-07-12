@@ -90,6 +90,9 @@
 										Enviar Avalia&ccedil;&atilde;o
 									</a>
 							    </div>
+							    <div data-ng-show="mensagem != ''">
+							    	<p class="bg-success">{{mensagem}}</p>
+							    </div>
 							</span>
 							<span class="list-group-item"
 								data-ng-repeat="avaliacao in avaliacoes | orderBy:depoimento">

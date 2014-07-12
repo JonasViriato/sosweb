@@ -99,6 +99,7 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico,
 				$scope.user.senha='';
 				$scope.user.apiKey = data.apiKey;
 				$scope.user.nome = data.usuario.nome;
+				$scope.user.facebookId = data.usuario.facebookId;
 				Authentication.login($scope.user);
 				//Alerts.closeAll();
 				$scope.$apply();
@@ -152,6 +153,7 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico,
 				$scope.user.confirmarsenha='';
 				$scope.user.apiKey = data.apiKey;
 				$scope.user.nome = data.usuario.nome;
+				$scope.user.facebookId = data.usuario.facebookId;
 				Authentication.login($scope.user);
 				//Alerts.closeAll();
 				$scope.$apply();

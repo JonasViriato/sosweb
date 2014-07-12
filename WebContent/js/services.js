@@ -275,7 +275,7 @@ SoServices.factory('Authentication', function($localStorage, $rootScope, $q){
 		    apiKey: '',
 		    logado: false,
 		    confirmarsenha: null,
-		    facebookId:''
+		    facebookId:'' 
 	};
 	
 	var logged = false;

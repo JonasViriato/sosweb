@@ -65,7 +65,8 @@
 						    </div>
 						</div>
 						<div class="col-md-2">
-							<img src="img/profile.png" width="100" height="100" alt="{{servico.prestador.nome}}" class="img-thumbnail">
+							<img data-ng-hide="servico.prestador.facebookId" src="img/profile.png" width="100" height="100" alt="{{servico.prestador.nome}}" class="img-thumbnail">
+							<img data-ng-show="servico.prestador.facebookId" src="http://graph.facebook.com/{{servico.prestador.facebookId}}/picture?type=square" width="100" height="100" alt="{{servico.prestador.nome}}" class="img-thumbnail">							
 						</div>
 					</div>
 				</div>

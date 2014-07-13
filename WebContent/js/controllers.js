@@ -115,7 +115,7 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico,
 	$scope.logout = function () {
 		$http({
 			method : 'DELETE',
-			url : 'http://localhost:8080/sos-api/token/logout/'+$scope.user.email,
+			url : 'http://soservices.vsnepomuceno.cloudbees.net/token/logout/'+$scope.user.email,
 			data : $scope.user,
 			headers: {'Content-Type': 'application/json'}
 		}).
@@ -225,7 +225,7 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico,
 			modalInstance.result.then(function () {
 				$http({
 					method : 'DELETE',
-					url : 'http://localhost:8080/sos-api/prestador?email='+ $scope.user.email,
+					url : 'http://soservices.vsnepomuceno.cloudbees.net/prestador?email='+ $scope.user.email,
 					data : $scope.user,
 					headers: {'Content-Type': 'application/json', 
 								'token-api': $scope.user.apiKey}
@@ -316,13 +316,13 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico,
  	$scope.avaliacoes = function () {
  		$http({
  			method: 'GET',
- 			url: 'http://localhost:8080/sos-api/prestador/email?email='+$scope.user.email}).
+ 			url: 'http://soservices.vsnepomuceno.cloudbees.net/prestador/email?email='+$scope.user.email}).
  			success(function(data, status, headers, config, prest) {
  				if (data.cpf != data.email) {
  					$location.path('/avaliacoesPrest/email/'+$scope.user.email+
  							'/apiKey/'+$scope.user.apiKey);
  				} else {
- 					Alerts.add('Voc^e ainda não é um prestador, cadastre um anúncio!', 'warning');
+ 					Alerts.add('Você ainda não é um prestador, cadastre um anúncio!', 'warning');
  				}
  			}).
  			error(function(data, status, headers, config) {		
@@ -650,7 +650,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 				 $scope.user.senha != '' && $scope.user.senha != null) {
 			$http({
 				method : 'POST',
-				url : 'http://localhost:8080/sos-api/token/login',
+				url : 'http://soservices.vsnepomuceno.cloudbees.net/token/login',
 				data : $scope.user,
 				headers: {'Content-Type': 'application/json'}
 			}).
@@ -668,7 +668,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 		$scope.faceUser.then(function(result) { 
 			$http({
 				method : 'POST',
-				url : 'http://localhost:8080/sos-api/token/login/facebook',
+				url : 'http://soservices.vsnepomuceno.cloudbees.net/token/login/facebook',
 				data : Authentication.currentUser(),
 				headers: {'Content-Type': 'application/json'}
 			}).
@@ -718,7 +718,7 @@ var cadastrarCtrl = function ($scope, $http, $modalInstance, Alerts, user) {
 		 if (angular.equals($scope.user.senha, $scope.user.confirmarsenha) ) {
 			$http({
 				method : 'POST',
-				url : 'http://localhost:8080/sos-api/prestador/usuario',
+				url : 'http://soservices.vsnepomuceno.cloudbees.net/prestador/usuario',
 				data : $scope.user,
 				headers: {'Content-Type': 'application/json'}
 			}).
@@ -755,7 +755,7 @@ var cadastroPrestadorCtrl = function ($scope, $http, $modalInstance, Alerts, pre
 			$scope.prestador.estado != '' && $scope.prestador.estado != null) {
 				$http({
 					method : 'PUT',
-					url : 'http://localhost:8080/sos-api/prestador',
+					url : 'http://soservices.vsnepomuceno.cloudbees.net/prestador',
 					data : $scope.prestador,
 					headers: {'Content-Type': 'application/json', 
 								'token-api': $scope.apiKey}
@@ -772,7 +772,7 @@ var cadastroPrestadorCtrl = function ($scope, $http, $modalInstance, Alerts, pre
  	$scope.avaliacoes = function () {
  		$http({
  			method: 'GET',
- 			url: 'http://localhost:8080/sos-api/prestador/email?email='+$scope.user.email}).
+ 			url: 'http://soservices.vsnepomuceno.cloudbees.net/prestador/email?email='+$scope.user.email}).
  			success(function(data, status, headers, config, prest) {
  				if (data.cpf != data.email) {
  					$location.path('/avaliacoesPrest/email/'+$scope.user.email+
@@ -802,7 +802,7 @@ var anuncioCtrl = function ($scope, $http,$modalInstance, Alerts, servico, tipos
 		if ($scope.servico.descricao != '' && $scope.servico.nome_tipo_servico != '') {
 			$http({
 				method : 'POST',
-				url : 'http://localhost:8080/sos-api/servico',
+				url : 'http://soservices.vsnepomuceno.cloudbees.net/servico',
 				data : $scope.servico,
 				headers: {'Content-Type': 'application/json', 
 							'token-api': $scope.apiKey}
@@ -855,7 +855,7 @@ SoSCtrls.controller('PrestadoresAnunciosCtrl', [ '$scope', '$route', '$http', '$
 		
 		$http({
 			method: 'GET',
-			url: 'http://localhost:8080/sos-api/tipo-servico'}).
+			url: 'http://soservices.vsnepomuceno.cloudbees.net/tipo-servico'}).
 			success(function(data, status, headers, config) {
 				$scope.tiposServicos = data;
 
@@ -884,7 +884,7 @@ SoSCtrls.controller('PrestadoresAnunciosCtrl', [ '$scope', '$route', '$http', '$
 				modalInstance.result.then(function () {
 					$http({
 						method : 'DELETE',
-						url : 'http://localhost:8080/sos-api/servico/'+id,
+						url : 'http://soservices.vsnepomuceno.cloudbees.net/servico/'+id,
 						headers: {'Content-Type': 'application/json', 
 									'token-api': $scope.apiKey}
 					}).
@@ -942,7 +942,7 @@ var editarAnuncioCtrl = function ($scope, $http,$modalInstance, Alerts, servico,
 		if ($scope.servico.descricao != '' && $scope.servico.nome_tipo_servico != '') {
 			$http({
 				method : 'PUT',
-				url : 'http://localhost:8080/sos-api/servico/'+$scope.servico.id,
+				url : 'http://soservices.vsnepomuceno.cloudbees.net/servico/'+$scope.servico.id,
 				data : $scope.servico,
 				headers: {'Content-Type': 'application/json', 
 							'token-api': $scope.apiKey}
@@ -988,7 +988,7 @@ var editPrestadorCtrl = function ($scope, $http, $modalInstance, Alerts, prestad
 			 $scope.prestador.estado != '' && $scope.prestador.estado != null) {
 		 $http({
 				method : 'PUT',
-				url : 'http://localhost:8080/sos-api/prestador',
+				url : 'http://soservices.vsnepomuceno.cloudbees.net/prestador',
 				data : $scope.prestador,
 				headers: {'Content-Type': 'application/json', 
 							'token-api': $scope.apiKey}
@@ -1041,7 +1041,7 @@ var atualizarSenhaCtrl = function ($scope, $http, $modalInstance, Alerts, apiKey
 				$scope.senha.email = email;
 				$http({
 					method : 'PUT',
-					url : 'http://localhost:8080/sos-api/prestador/atualizarSenha',
+					url : 'http://soservices.vsnepomuceno.cloudbees.net/prestador/atualizarSenha',
 					data : $scope.senha,
 					headers : {
 						'Content-Type' : 'application/json',
@@ -1152,7 +1152,7 @@ SoSCtrls.controller('ForumPrestCtrl', [ '$scope', '$route', '$http', '$location'
 				};
 				$http({
 					method : 'PUT',
-					url : 'http://localhost:8080/sos-api/forum/resposta?id='+id,
+					url : 'http://soservices.vsnepomuceno.cloudbees.net/forum/resposta?id='+id,
 					data : $scope.resposta,
 					headers : {
 						'Content-Type' : 'application/json',

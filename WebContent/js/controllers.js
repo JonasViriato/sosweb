@@ -339,8 +339,8 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico,
 
 /* Ctrl Busca de prestadores */
 SoSCtrls.controller('PrestadoresCtrl', ['$scope', '$location', '$routeParams',
-	'Alerts', 'ServicePrestadores', 'ServiceTpServico',
-	function($scope, $location, $routeParams, Alerts, ServicePrestadores, ServiceTpServico) {
+	'$modal', 'Alerts', 'ServicePrestadores', 'ServiceTpServico',
+	function($scope, $location, $routeParams, $modal, Alerts, ServicePrestadores, ServiceTpServico) {
 
 	 	$scope.tipoServico = $routeParams.tipoServico;
 		$scope.endereco = $routeParams.endereco;
@@ -449,6 +449,25 @@ SoSCtrls.controller('PrestadoresCtrl', ['$scope', '$location', '$routeParams',
 			$location.path('/servico/'+servico.id);
 		}
 
+		//TODO refatorar duplicação de método
+		$scope.exibirAvaliacoes= function(servico){
+			var modalInstance;
+			ServicePrestadores.getAvaliacoes(servico.prestador.email,
+				function(data) {
+					$scope.avaliacoes = data;
+					modalInstance = $modal.open({
+						  templateUrl: 'partials/avaliacoes.html',
+						  controller: 'AvaliacoesCtrl',
+						  resolve: {				
+							avaliacoes: function () {
+							  return $scope.avaliacoes;
+							}
+						  }
+					});
+				}
+			);
+		};
+
 		if($scope.tipoServico && $scope.endereco && $scope.raio){
 			$scope.getPesquisadores();
 		}
@@ -527,8 +546,8 @@ SoSCtrls.controller('ServicoCtrl', ['$scope', '$routeParams', '$modal',
 			}
 		};
 	
+		//TODO refatorar duplicação de método
 		$scope.openAvaliacoes = function () {
-
 			var modalInstance;
 			ServicePrestadores.getAvaliacoes($scope.servico.prestador.email,
 				function(data) {
@@ -542,12 +561,6 @@ SoSCtrls.controller('ServicoCtrl', ['$scope', '$routeParams', '$modal',
 							  return $scope.avaliacoes;
 							}
 						  }
-					});
-
-					modalInstance.result.then(
-					function () {
-						Alerts.add('Prestador cadastrado com sucesso!', 'success');
-						$scope.openCadastroAnuncio();
 					});
 				}
 			);

@@ -38,10 +38,16 @@ function($scope, $route, $http, $location, $modal, Alerts, ServiceTpServico,
 	
 
 	$scope.search = function() {
-		$location.path(
-			'/busca/tipoServico/'+$scope.tipoServico+
-			'/endereco/'+$scope.endereco+
-			'/raio/'+$scope.raio);
+		if ($scope.tipoServico != null && $scope.tipoServico != '' &&
+			$scope.endereco != null && $scope.endereco != '' &&
+			$scope.raio != null && $scope.raio != '') {
+			$location.path(
+				'/busca/tipoServico/'+$scope.tipoServico+
+				'/endereco/'+$scope.endereco+
+				'/raio/'+$scope.raio);
+		} else {
+			Alerts.add('Preencha as informações da busca!', 'warning');
+		}
 	};
 	
 	$scope.openPrestadorAnuncios = function() {
@@ -360,34 +366,42 @@ SoSCtrls.controller('PrestadoresCtrl', ['$scope', '$location', '$routeParams',
 		};
 
 		$scope.getPesquisadores = function() {
-			geo.geocode({'address':$scope.endereco},function(results, status){
-			  	if (status == google.maps.GeocoderStatus.OK) {
-					$scope.userLocation = results[0].geometry.location;
-					ll = new google.maps.LatLng($scope.userLocation.lat(), $scope.userLocation.lng());
-					
-					//Recupera o ID do tipo de servico
-					ServiceTpServico.getIdByName($scope.tipoServico).then(
-						function(idTpServico) { 
-							//Busca os prestadores de servicos
-							ServicePrestadores.getServicos(
-								idTpServico, //Encontrar maneira de trocar nome para id
-								$scope.userLocation.lat(), 
-								$scope.userLocation.lng(),
-								($scope.raio * 1000), //API esta em metros e nao KM.
-								function(data) {
-									$scope.servicos = data;
-
-									// alert('Chamando carrega mapa..');
-									$scope.carregarMapa(ll);
-								}
-							);
-						}
-					);
-			  	} else {
-			  		Alerts.add(
-			  			"Geocode was not successful for the following reason: " + status, 'danger');
-			  	}
-			});
+			
+			if ($scope.tipoServico != null && $scope.tipoServico != '' &&
+					$scope.endereco != null && $scope.endereco != '' &&
+					$scope.raio != null && $scope.raio != '') {
+				
+				geo.geocode({'address':$scope.endereco},function(results, status){
+				  	if (status == google.maps.GeocoderStatus.OK) {
+						$scope.userLocation = results[0].geometry.location;
+						ll = new google.maps.LatLng($scope.userLocation.lat(), $scope.userLocation.lng());
+						
+						//Recupera o ID do tipo de servico
+						ServiceTpServico.getIdByName($scope.tipoServico).then(
+							function(idTpServico) { 
+								//Busca os prestadores de servicos
+								ServicePrestadores.getServicos(
+									idTpServico, //Encontrar maneira de trocar nome para id
+									$scope.userLocation.lat(), 
+									$scope.userLocation.lng(),
+									($scope.raio * 1000), //API esta em metros e nao KM.
+									function(data) {
+										$scope.servicos = data;
+	
+										// alert('Chamando carrega mapa..');
+										$scope.carregarMapa(ll);
+									}
+								);
+							}
+						);
+				  	} else {
+				  		Alerts.add(
+				  			"Geocode was not successful for the following reason: " + status, 'danger');
+				  	}
+				});
+			} else {
+				Alerts.add('Preencha as informações da busca!', 'warning');
+			}
 		};
 
 		$scope.carregarMapa = function(center) {
@@ -450,6 +464,7 @@ SoSCtrls.controller('ServicoCtrl', ['$scope', '$routeParams', '$modal',
 		$scope.posts = [];
 		$scope.pergunta = '';
 		$scope.mensagem = '';
+		$scope.mensagemWarn = false;
 
 		$scope.mapOptions = {
 			center: new google.maps.LatLng(
@@ -492,18 +507,24 @@ SoSCtrls.controller('ServicoCtrl', ['$scope', '$routeParams', '$modal',
 		}
 
 		$scope.post = function() {
-			ServiceForum.post(
-				$scope.idServico,
-				$scope.user.email,
-				$scope.pergunta,
-				$scope.user.apiKey,
-				function(data) {
-					// alert(JSON.stringify(data));
-					$scope.mensagem = data;
-					$scope.consultarForum();
-					$scope.pergunta = '';
-				}
-			);
+			if ($scope.pergunta != null && $scope.pergunta != '') {
+				ServiceForum.post(
+					$scope.idServico,
+					$scope.user.email,
+					$scope.pergunta,
+					$scope.user.apiKey,
+					function(data) {
+						// alert(JSON.stringify(data));
+						$scope.mensagemWarn = false;
+						$scope.mensagem = data;
+						$scope.consultarForum();
+						$scope.pergunta = '';
+					}
+				);
+			} else {
+				$scope.mensagemWarn = true;
+				$scope.mensagem = 'Preencher a pergunta!';
+			}
 		};
 	
 		$scope.openAvaliacoes = function () {
@@ -559,6 +580,7 @@ SoSCtrls.controller('PrestadorCtrl', ['$scope', '$routeParams', 'Alerts',
 		$scope.mensagem = '';	
 		$scope.avaliacoes = [];
 		$scope.servicos = [];
+		$scope.mensagemWarn = false;
 
 		$scope.avaliacao = {
 			nota: 0,
@@ -593,20 +615,24 @@ SoSCtrls.controller('PrestadorCtrl', ['$scope', '$routeParams', 'Alerts',
 
 			$scope.avaliacao.usuario_avaliador_email = $scope.user.email;
 			$scope.avaliacao.usuario_id = $scope.prestador.id;
-
-			ServiceAvaliacoes.avaliarPrestador($scope.avaliacao, $scope.user.apiKey,
-				function(data) {
-					$scope.avaliacao = {
-						nota: 0,
-						usuario_id: $scope.prestador.id,
-						usuario_avaliador_email: $scope.user.email
-					};
-
-					$scope.consultarServicos();
-					$scope.consultarAvaliacoes();
-					$scope.mensagem = data;
-				}
-			);	
+			if ($scope.avaliacao.depoimento != null && $scope.avaliacao.depoimento != '') {
+				ServiceAvaliacoes.avaliarPrestador($scope.avaliacao, $scope.user.apiKey,
+					function(data) {
+						$scope.avaliacao = {
+							nota: 0,
+							usuario_id: $scope.prestador.id,
+							usuario_avaliador_email: $scope.user.email
+						};
+						$scope.mensagemWarn = false;
+						$scope.consultarServicos();
+						$scope.consultarAvaliacoes();
+						$scope.mensagem = data;
+					}
+				);				
+			} else {
+				$scope.mensagemWarn = true;
+				$scope.mensagem = "Preencha o depoimento!";
+			}
 		}
 
 		ServicePrestadores.getPrestador($scope.emailPrestador,

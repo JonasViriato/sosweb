@@ -727,8 +727,10 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 				headers: {'Content-Type': 'application/json'}
 			}).
 			success(function(data, status, headers, config) {
+				Dialog.waitDialogClose();
 				$modalInstance.close(data);
 			}).error(function(data, status, headers, config) {
+				Dialog.waitDialogClose();
 				Alerts.add('Erro: ' + status + ' ' + data, 'danger');
 			});  
 		});   

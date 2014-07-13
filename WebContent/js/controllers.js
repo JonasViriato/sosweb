@@ -725,8 +725,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
   
   $scope.logarFace = function() {
 	  $scope.isLogged = Authentication.checkLogged();
-	  $scope.progress = true;
-	  $scope.$apply();
+	  Dialog.waitDialogOpen();
 	  $scope.isLogged.then(function(result) { 
 		if (Authentication.isFaceLogged()) {
 			$scope.loginFace();
@@ -736,8 +735,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 				$scope.loginFace();
 			});			
 		}
-		$scope.progress = false;
-		$scope.$apply();		
+		Dialog.waitDialogClose();	
 	  });
 	};
 

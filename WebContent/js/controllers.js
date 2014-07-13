@@ -354,7 +354,7 @@ SoSCtrls.controller('PrestadoresCtrl', ['$scope', '$location', '$routeParams',
 		$scope.maxRate = 5;
 
 		//Filter and order
-		$scope.orderProp = '';
+		$scope.orderProp = 'prestador.distancia';
 		$scope.orderBy = function (orderProp) {
 			$scope.orderProp = orderProp;
 		};

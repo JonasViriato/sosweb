@@ -104,6 +104,13 @@ html,body {
   color: #fff;
 }
 
+.super-small-photo {
+  width: 35px;
+  height: 35px;
+  padding: 1px;
+  margin-bottom: 0px;
+}
+
 .progress{
-	height: 40px;
+  height: 40px;
 }

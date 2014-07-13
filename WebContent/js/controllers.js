@@ -703,7 +703,7 @@ var LoginCtrl = function ($scope, $http, $modalInstance, Authentication, Alerts,
 				Dialog.waitDialogClose();
 				Alerts.add('Erro: ' + status + ' ' + data, 'danger');
 			});	
-		} 		
+		} 
   };
   
   $scope.loginFace = function() {

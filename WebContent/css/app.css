@@ -103,3 +103,7 @@ html,body {
 .white, .white a {
   color: #fff;
 }
+
+.progress{
+	height: 40px;
+}
